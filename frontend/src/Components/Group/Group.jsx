@@ -5,13 +5,12 @@ import {Link, useNavigate} from "react-router-dom";
 import {Modal} from 'react-bootstrap';
 import DataLoading from "ui/dataLoading";
 import "./Group.scss"
-
+import './style.css'
 function Group(props) {
 
 
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([{id: 1, name: "salom"}, {id: 1, name: "salom"}
-        ])
+    const [data, setData] = useState([  ])
     ;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingID, setEditingID] = useState(false);
@@ -25,8 +24,8 @@ function Group(props) {
     function getData() {
         setLoading(true)
         setTimeout(() => {
-            apiCall('/groups', 'get').then(data => {
-                // setData(data.data)
+            apiCall('/groups/public', 'get').then(data => {
+                 setData(data.data)
                 setLoading(false)
             })
         }, 1000)
@@ -95,9 +94,8 @@ function Group(props) {
             <div style={{marginTop: '200px'}} className={'container d-flex gap-4'}>
 
                 {loading ? <DataLoading/> : data?.map(item =>
-                    <div className=" ">
-                        <div style={{cursor: "pointer"}}
-                             className="group-btn rounded event_date d-flex flex-column align-items-center justify-content-center">
+                    <div className="col-lg-2 order-lg-1 order-2 " >
+                        <div className="event_date d-flex flex-column align-items-center justify-content-center">
                             <Link to={`lesson/${item.id}`} className="event_day">{item.name}</Link>
                             <div className="event_month">talabalar({item.studentCount})</div>
                         </div>
