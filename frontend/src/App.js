@@ -14,6 +14,9 @@ import Loader from "ui/loader";
 import {ToastContainer} from "react-toastify";
 import Rating from "Components/rating/rating";
 import RatingGroup from "Components/rating/rating-group/rating-group";
+import NewsHome from "./Components/News/NewsHome";
+import NewsForTeachers from "./Components/News/newsForTeachers";
+import NewsForStudents from "./Components/News/newsForStudents";
 
 function App() {
 
@@ -27,16 +30,7 @@ function App() {
         if (blockedPages.some((blockedPage) => location.pathname.startsWith(blockedPage))) {
             let accessToken = localStorage.getItem("access_token");
             if (accessToken !== null) {
-                try {
-                    const res = await instance("/api/v1/security", "GET");
-                    if (res?.data !== 401 && res?.error) {
-                        if (res?.data[0].name !== "ROLE_SUPER_ADMIN") {
-                            navigate("/404");
-                        }
-                    }
-                } catch (error) {
-                    navigate("/");
-                }
+                //blocked pageni himoyalash
             } else {
                 navigate("/");
             }
@@ -85,6 +79,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
+                    <Route path="/news" element={<NewsHome/>}/>
+                    <Route path="/news/teachers" element={<NewsForTeachers/>}/>
+                    <Route path="/news/students" element={<NewsForStudents/>}/>
                     <Route path="/timetable" element={<Group/>}/>
                     <Route path="/timetable/lesson/:groupId" element={<Lesson/>}/>
                     <Route path="/404" element={<ErrorPage/>}/>

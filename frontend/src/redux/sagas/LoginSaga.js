@@ -14,7 +14,7 @@ function* workLoginUser(action) {
         yield put(loginStart());
         const response = yield call(() =>
             axios.post(
-                "http://localhost:8080/api/v1/auth/login",
+                "http://localhost:8080/api/auth/login/public",
                 {
                     phone: action.payload.phone,
                     password: action.payload.password,
