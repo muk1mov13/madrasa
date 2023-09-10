@@ -17,6 +17,7 @@ import RatingGroup from "Components/rating/rating-group/rating-group";
 import NewsHome from "./Components/News/NewsHome";
 import NewsForTeachers from "./Components/News/newsForTeachers";
 import NewsForStudents from "./Components/News/newsForStudents";
+import RatingCourse from "Components/rating/rating-course/rating-course";
 
 function App() {
 
@@ -86,7 +87,7 @@ function App() {
                     <Route path="/timetable/lesson/:groupId" element={<Lesson/>}/>
                     <Route path="/404" element={<ErrorPage/>}/>
                     <Route path="/rating" element={<Rating/>}/>
-                    <Route path="/rating/:courseId" element={<Rating/>}/>
+                    <Route path="/rating/:courseId" element={<RatingCourse/>}/>
                     <Route path="/rating/:courseId/:groupId" element={<RatingGroup/>}/>
                 </Routes>
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 function RatingGroup(props) {
     return (
-        <div></div>
+        <div>lmk</div>
     );
 }
 

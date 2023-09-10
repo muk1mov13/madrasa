@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import "./rating.scss"
 import Header from "Components/header/header";
 import DataLoading from "ui/dataLoading";
+import {Link} from "react-router-dom";
 
 function Rating(props) {
 
@@ -11,12 +12,16 @@ function Rating(props) {
         id: 1,
         name: "Course 1",
     }, {
-        id: 1,
+        id: 2,
         name: "Course 2",
     },
         {
-            id: 1,
+            id: 3,
             name: "Course 3",
+        },
+        {
+            id: 4,
+            name: "Course 4",
         },
     ])
 
@@ -28,13 +33,18 @@ function Rating(props) {
 
             <div style={{marginTop: '200px'}} className={"container"} >
                 <div className={"courses-outer"}>
-                    {
-                        loading ? <DataLoading/> : courses?.map(course => (
-                            <div className={"course"} key={course.id}>
-                                <h4>{course.name}</h4>
-                            </div>
-                        ))
-                    }
+                    <Link to={`/rating/${1}`} className={"course"} >
+                        <h4>1-kurs</h4>
+                    </Link>
+                    <Link to={`/rating/${2}`} className={"course"} >
+                        <h4>2-kurs</h4>
+                    </Link>
+                    <Link to={`/rating/${3}`} className={"course"} >
+                        <h4>3-kurs</h4>
+                    </Link>
+                    <Link to={`/rating/${4}`} className={"course"} >
+                        <h4>4-kurs</h4>
+                    </Link>
                 </div>
 
             </div>
