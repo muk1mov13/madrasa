@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
                 map.put("refresh_token", refresh_token);
             }
             return ResponseEntity.ok(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
             response.setContentType("application/json");
             response.getWriter().write("Wrong phone number or password!");
@@ -73,4 +75,10 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public User decode(String token) {
+        String phone = jwtService.extractSubjectFromJWT(token);
+        User user = userRepository.findByPhone(phone).orElseThrow(() -> new NoSuchElementException("not found"));
+        return user;
+    }
 }

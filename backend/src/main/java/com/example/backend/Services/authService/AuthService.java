@@ -1,5 +1,6 @@
 package com.example.backend.Services.authService;
 
+import com.example.backend.Entity.User;
 import com.example.backend.payload.request.ReqLogin;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpEntity;
@@ -12,4 +13,6 @@ public interface AuthService {
     HttpEntity<?> loginUser(ReqLogin reqLogin, HttpServletResponse response) throws IOException;
 
     HttpEntity<?> refreshToken(String refreshToken, HttpServletResponse response) throws IOException;
+
+    User decode(String token);
 }
