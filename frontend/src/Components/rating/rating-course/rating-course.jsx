@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect} from 'react';
 import apiCall from '../../../instance/index'
 import Header from 'Components/header/header'
@@ -28,7 +29,7 @@ function RatingCourse(props) {
         setTimeout(() => {
             apiCall('/groups/public', 'get').then(data => {
                 setData(data.data)
-                setLoading(false)
+               setLoading(false)
             })
         }, 1000)
     }
@@ -62,7 +63,8 @@ function RatingCourse(props) {
         setIsModalOpen(false);
         setForm({
             name: "",
-            count: 0
+            count: 0,
+            kurs: courseId
         })
     }
 

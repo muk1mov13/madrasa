@@ -10,6 +10,7 @@ function RatingGroup(props) {
     const [currentGroup, setCurrentGroup] = useState({});
     const [students, setStudents] = useState([])
     const [subjects, setSubjects] = useState([])
+    const [ratings, setRatings]=useState([])
 
 
     const [studentName, setStudentName] = useState('')
@@ -22,11 +23,15 @@ function RatingGroup(props) {
         console.log(groupId)
         apiCall('/student/public/' + groupId, 'get').then(res => {
 
-            setStudents(res.data)
+             setStudents(res.data)
         })
 
         apiCall('/subject/' + groupId, 'get').then(res => {
-            setSubjects(res.data)
+             setSubjects(res.data)
+        })
+        apiCall('/rating/' + groupId, 'get').then(res => {
+            setRatings(res.data.body)
+            console.log(res.data.body)
         })
 
     }
@@ -44,7 +49,6 @@ function RatingGroup(props) {
             name: studentName,
             groupId: groupId
         }
-        console.log(data)
         apiCall('/student', 'post', data).then(res =>
             getData()
         )
@@ -52,14 +56,39 @@ function RatingGroup(props) {
     }
 
     function saveSubject() {
+        if (subjectName === '') {
+            return;
+        }
         let data = {
             name: subjectName,
             groupId: groupId
         }
-        apiCall('/subject', 'post', data).then(res =>
+
+        apiCall('/subject/', 'post', data).then(res =>
             getData()
         )
+        setSubjectName('')
     }
+    const [mark, setMark] = useState('');
+
+    function createRating(baho, studentId, subjectId) {
+        setMark(baho);
+
+
+        clearTimeout(createRatingTimeout);
+
+        const createRatingTimeout = setTimeout(() => {
+            let data = {
+                subjectId,
+                studentId,
+                mark,
+            };
+
+            apiCall('/rating', 'post', data).then((res) => getData());
+        }, 2000);
+    }
+
+// Rest of your component code...
 
     return (
         <div>
@@ -73,14 +102,15 @@ function RatingGroup(props) {
                     <tr>
                         <th style={{width: '50px'}}>№</th>
                         <th>O'quvchilar</th>
-                        <th style={{width: '200px'}}>fan1</th>
-                        <th style={{width: '200px'}}>fan1</th>
+                        {subjects.map(item=>
+                            <th>{item.name}</th>
+                        )}
                         <th>
                             <CheckUser>
                                 <div style={{width: '200px'}} className={'d-flex m-0 p-0'}>
                                     <input value={subjectName} onChange={(e) => {
                                         setSubjectName(e.target.value)
-                                    }} placeholder={"fan qo'shish"} className={'form-control '}/>
+                                    }} placeholder={"fan qo'shish"} className={'form-control shadow-none border border-0 '}/>
                                     <button onClick={saveSubject} className={'btn btn-warning'}>+</button>
                                 </div>
                             </CheckUser>
@@ -88,15 +118,30 @@ function RatingGroup(props) {
                     </tr>
                     </thead>
                     <tbody>
-                    {students?.map((item, index) =>
-                        <tr key={item.id}>
-                            <th>{index + 1}</th>
-                            <td>{item.name}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    )}
+                    {
+                        ratings?.map((rating,index)=>
+
+                            <tr className={'text-center'}>
+                                <th>{index + 1}</th>
+                                <td>{rating?.student.name}</td>
+                                {subjects.map(subject => {
+                                    const filteredRatings = rating?.getRating.filter(item => item.subject.id === subject.id);
+                                    if (filteredRatings.length === 0) {
+                                        return <td  key={subject.id} >
+                                            <input  type={"number"}  maxLength={3} onChange={(e)=>createRating(e.target.value,rating.student.id, subject.id)} className={'form-control shadow-none border border-0'}/>
+                                        </td>;
+                                    } else {
+                                        return filteredRatings.map(result => (
+                                            <td key={result.id}>{result.mark}</td>
+                                        ));
+                                    }
+                                })}
+                                <td></td>
+                            </tr>
+
+                        )
+                    }
+
 
 
                     <tr>
@@ -108,13 +153,16 @@ function RatingGroup(props) {
                                 <div className={'d-flex'}>
                                     <input value={studentName} onChange={(e) => {
                                         setStudentName(e.target.value)
-                                    }} placeholder={"O'quvchi qo'shish"} className={'form-control w-75'}/>
+                                    }} placeholder={"O'quvchi qo'shish"} className={'form-control shadow-none border border-0'}/>
                                     <button onClick={saveStudent} className={'btn btn-warning'}>+</button>
                                 </div>
                             </CheckUser>
                         </td>
-                        <td></td>
-                        <td></td>
+                        {
+                            subjects.map(item=>
+                            <td></td>
+                            )
+                        }
                         <td></td>
                     </tr>
 
