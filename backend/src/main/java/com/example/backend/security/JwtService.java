@@ -82,17 +82,4 @@ public class JwtService {
         response.getWriter().close();
         return false;
     }
-
-    public boolean isValidateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(generateSecretKey())
-                    .build().parseClaimsJws(token)
-                    .getBody();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
 }

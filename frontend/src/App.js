@@ -18,48 +18,9 @@ import NewsHome from "./Components/News/NewsHome";
 import NewsForTeachers from "./Components/News/newsForTeachers";
 import NewsForStudents from "./Components/News/newsForStudents";
 import RatingCourse from "Components/rating/rating-course/rating-course";
-import CheckUser from "./Components/Securty/CheckUser";
 
 function App() {
-
-    const blockedPages = ["/dashboard"];
-    const navigate = useNavigate();
     const location = useLocation();
-    const dispatch = useDispatch()
-
-    const checkSecurity = useCallback(async () => {
-
-        if (blockedPages.some((blockedPage) => location.pathname.startsWith(blockedPage))) {
-            let accessToken = localStorage.getItem("access_token");
-            if (accessToken !== null) {
-                //blocked pageni himoyalash
-            } else {
-                navigate("/");
-            }
-        }
-    }, [blockedPages, location.pathname, navigate]);
-    useEffect(() => {
-        checkSecurity();
-
-        const handleStorageChange = (event) => {
-            if (!localStorage.getItem("access_token")) {
-                navigate("/");
-            } else {
-                checkSecurity();
-            }
-        };
-        window.addEventListener("storage", handleStorageChange);
-
-        const handleBeforeUnload = () => {
-            handleStorageChange();
-        };
-        window.addEventListener("beforeunload", handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener("storage", handleStorageChange);
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, [checkSecurity, navigate]);
 
     // loading
     const [loading, setLoading] = useState(false);

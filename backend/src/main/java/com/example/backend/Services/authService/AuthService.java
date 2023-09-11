@@ -12,7 +12,7 @@ public interface AuthService {
 
     HttpEntity<?> loginUser(ReqLogin reqLogin, HttpServletResponse response) throws IOException;
 
-    HttpEntity<?> refreshToken(String refreshToken, HttpServletResponse response) throws IOException;
+//    HttpEntity<?> refreshToken(String refreshToken, HttpServletResponse response) throws IOException;
 
     User decode(String token);
 }

@@ -32,10 +32,4 @@ public class AuthController {
     public HttpEntity<?> login(@RequestBody ReqLogin reqLogin, HttpServletResponse response) throws IOException {
         return authService.loginUser(reqLogin, response);
     }
-
-    @PostMapping("/refresh/public")
-    public HttpEntity<?> refreshToken(@RequestParam String refresh_token, HttpServletResponse response) throws IOException {
-        return authService.refreshToken(refresh_token, response);
-    }
-
 }

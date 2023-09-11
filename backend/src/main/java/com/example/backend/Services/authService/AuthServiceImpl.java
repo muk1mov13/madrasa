@@ -42,12 +42,9 @@ public class AuthServiceImpl implements AuthService {
 
             User user = userRepository.findByPhone(reqLogin.getPhone()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
             String access_token = jwtService.generateJWT(user);
+            System.out.println(access_token);
             Map<String, String> map = new HashMap<>();
             map.put("access_token", access_token);
-            if (reqLogin.isRemember_me()) {
-                String refresh_token = jwtService.generateJWTRefresh_Token(user);
-                map.put("refresh_token", refresh_token);
-            }
             return ResponseEntity.ok(map);
         } catch (Exception e) {
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
@@ -59,21 +56,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    @Override
-    public HttpEntity<?> refreshToken(String refreshToken, HttpServletResponse response) throws IOException {
-        try {
-            String phone = jwtService.extractSubjectFromJWT(refreshToken);
-            User user = userRepository.findByPhone(phone).orElseThrow(() -> new UsernameNotFoundException("error!!!!!!"));
-            String access_token = jwtService.generateJWT(user);
-            return ResponseEntity.ok(access_token);
-        } catch (ExpiredJwtException | MalformedJwtException e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType("application/json");
-            response.getWriter().write("Refresh token has expired");
-            response.getWriter().close();
-            return null;
-        }
-    }
+//    @Override
+//    public HttpEntity<?> refreshToken(String refreshToken, HttpServletResponse response) throws IOException {
+//        try {
+//            String phone = jwtService.extractSubjectFromJWT(refreshToken);
+//            User user = userRepository.findByPhone(phone).orElseThrow(() -> new UsernameNotFoundException("error!!!!!!"));
+//            String access_token = jwtService.generateJWT(user);
+//            return ResponseEntity.ok(access_token);
+//        } catch (ExpiredJwtException | MalformedJwtException e) {
+//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//            response.setContentType("application/json");
+//            response.getWriter().write("Refresh token has expired");
+//            response.getWriter().close();
+//            return null;
+//        }
+//    }
 
     @Override
     public User decode(String token) {

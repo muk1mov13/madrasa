@@ -7,7 +7,7 @@ function CheckUser({children, margin = "my6"}) {
 
     function getUser() {
         let token = localStorage.getItem('access_token');
-        if (token != null) {
+        if (token !== null) {
             axios({
                 url: 'http://localhost:8080/api/auth/me', method: 'get', headers: {
                     Authorization: token,
@@ -29,7 +29,7 @@ function CheckUser({children, margin = "my6"}) {
     useEffect(() => {
         getUser()
     }, [])
-    return (<div>
+    return (<div className={'d-inline-block'}>
             {hasUser ? <>{children}</> : <></>}
         </div>
     );

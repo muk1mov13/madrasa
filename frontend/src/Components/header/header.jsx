@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from "./images/logo.png"
 import phoneCall from "./images/phone-call.svg"
 import "./header.scss"
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import CheckUser from "../Securty/CheckUser";
 
 function Header(props) {
     const navigate = useNavigate()
+
+    function logout() {
+        window.location.reload();
+        localStorage.removeItem("access_token");
+    }
+
+    const hasUser = localStorage.getItem('access_token');
 
     return (
         <div className={"my-header"}>
@@ -28,6 +36,17 @@ function Header(props) {
                                 <li onClick={() => navigate("/news")} className="main_nav_item">e'lonlar</li>
                                 <li onClick={() => navigate("/timetable")} className="main_nav_item">dars jadvali</li>
                                 <li onClick={() => navigate("/rating")} className="main_nav_item">rating</li>
+                                {
+                                    hasUser ?
+                                        <div className={'btn btn-warning'}>
+                                            <CheckUser>
+                                                <li onClick={logout} className="main_nav_item text-light">log out</li>
+                                            </CheckUser>
+                                        </div>
+                                        :
+                                        <li onClick={() => navigate("/login")}
+                                            className="main_nav_item btn btn-warning text-light">login</li>
+                                }
                             </ul>
                         </div>
                     </nav>
