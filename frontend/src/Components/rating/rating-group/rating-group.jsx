@@ -69,27 +69,22 @@ function RatingGroup(props) {
         )
         setSubjectName('')
     }
-    const [mark, setMark] = useState('');
+    const [mark, setMark]=useState('')
+    function createRating(baho, studentId, subjectId){
+        setMark(baho)
+        let data={
+            subjectId,
+            studentId,
+            mark
+        }
+        setTimeout(() => {
 
-    function createRating(baho, studentId, subjectId) {
-        setMark(baho);
+        }, 1000);
 
-
-        clearTimeout(createRatingTimeout);
-
-        const createRatingTimeout = setTimeout(() => {
-            let data = {
-                subjectId,
-                studentId,
-                mark,
-            };
-
-            apiCall('/rating', 'post', data).then((res) => getData());
-        }, 2000);
+        apiCall('/rating', 'post', data).then(res =>
+            getData()
+        )
     }
-
-// Rest of your component code...
-
     return (
         <div>
             <Header/>
