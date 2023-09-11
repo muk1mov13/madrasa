@@ -7,6 +7,8 @@ import DataLoading from "ui/dataLoading";
 import "./Group.scss"
 import './style.css'
 import CheckUser from "../Securty/CheckUser";
+import editIcon from './pen.png'
+import deleteIcon from './bin.png'
 
 function Group(props) {
 
@@ -100,6 +102,16 @@ function Group(props) {
                         <div className="event_date d-flex flex-column align-items-center justify-content-center">
                             <Link to={`lesson/${item.id}`} className="event_day">{item.name}</Link>
                             <div className="event_month">talabalar({item.studentCount})</div>
+                            <CheckUser>
+                                <div className={'btn-group m-1'}>
+                                    <button onClick={() => editItem(item)} className={'btn btn-outline-warning'}><img
+                                        src={editIcon} width={25}
+                                        height={25} alt=""/></button>
+                                    <button onClick={() => deleteItem(item.id)} className={'btn btn-outline-warning'}>
+                                        <img src={deleteIcon} width={25}
+                                             height={25} alt=""/></button>
+                                </div>
+                            </CheckUser>
                         </div>
                     </div>
                 )
