@@ -5,108 +5,123 @@ import {useParams} from "react-router-dom";
 import apiCall from "../../../instance";
 
 function RatingGroup(props) {
-    const { groupId } = useParams();
+    const {groupId} = useParams();
 
     const [currentGroup, setCurrentGroup] = useState({});
-    const [students, setStudents]=useState([])
+    const [students, setStudents] = useState([])
+    const [subjects, setSubjects] = useState([])
 
 
-    const [studentName, setStudentName]=useState('')
-    const [subjectName, setSubjectName]=useState('')
+    const [studentName, setStudentName] = useState('')
+    const [subjectName, setSubjectName] = useState('')
 
-    function getData(){
-        apiCall('/groups/public/' + groupId, 'get').then(res=>{
+    function getData() {
+        apiCall('/groups/public/' + groupId, 'get').then(res => {
             setCurrentGroup(res.data.body)
         })
         console.log(groupId)
-        apiCall('/student/public/' + groupId, 'get').then(res=>{
+        apiCall('/student/public/' + groupId, 'get').then(res => {
 
             setStudents(res.data)
         })
 
+        apiCall('/subject/' + groupId, 'get').then(res => {
+            setSubjects(res.data)
+        })
+
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         getData()
-    },[])
+    }, [])
 
 
-    function saveStudent(){
-        if(studentName===''){
+    function saveStudent() {
+        if (studentName === '') {
             return;
         }
-        let data={
-            name:studentName,
-            groupId:groupId
+        let data = {
+            name: studentName,
+            groupId: groupId
         }
         console.log(data)
-        apiCall('/student', 'post', data).then(res=>
+        apiCall('/student', 'post', data).then(res =>
             getData()
         )
         setStudentName('')
     }
-    function saveSubject(){
-        let data={
-            name:subjectName,
-            groupId:groupId
+
+    function saveSubject() {
+        let data = {
+            name: subjectName,
+            groupId: groupId
         }
-        apiCall('subject', 'post', data).then(res=>
+        apiCall('/subject', 'post', data).then(res =>
             getData()
         )
     }
+
     return (
-      <div>
-          <Header/>
-          <div style={{marginTop:'200px'}} className={'container'}>
-              <div>
-                  <h1>{currentGroup?.name} guruh</h1>
-              </div>
-              <table className={'table table-bordered text-center'}>
-                  <thead>
+        <div>
+            <Header/>
+            <div style={{marginTop: '200px'}} className={'container'}>
+                <div>
+                    <h1>{currentGroup?.name} guruh</h1>
+                </div>
+                <table className={'table table-bordered text-center'}>
+                    <thead>
                     <tr>
-                        <th style={{width:'50px'}}>№</th>
-                        <th >O'quvchilar</th>
-                        <th style={{width:'200px'}}>fan1</th>
-                        <th style={{width:'200px'}}>fan1</th>
+                        <th style={{width: '50px'}}>№</th>
+                        <th>O'quvchilar</th>
+                        <th style={{width: '200px'}}>fan1</th>
+                        <th style={{width: '200px'}}>fan1</th>
                         <th>
-                            <div style={{width:'200px'}} className={'d-flex m-0 p-0'}>
-                                <input value={subjectName} onChange={(e)=>{setStudentName(e.target.value)}} placeholder={"fan qo'shish"} className={'form-control '}/>
-                                <button onClick={saveSubject} className={'btn btn-warning'}>+</button>
-                            </div>
+                            <CheckUser>
+                                <div style={{width: '200px'}} className={'d-flex m-0 p-0'}>
+                                    <input value={subjectName} onChange={(e) => {
+                                        setSubjectName(e.target.value)
+                                    }} placeholder={"fan qo'shish"} className={'form-control '}/>
+                                    <button onClick={saveSubject} className={'btn btn-warning'}>+</button>
+                                </div>
+                            </CheckUser>
                         </th>
                     </tr>
-                  </thead>
-                  <tbody>
-                  {students?.map((item, index)=>
-                      <tr key={item.id}>
-                          <th>{index+1}</th>
-                          <td>{item.name}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                      </tr>
-
-                  )}
-
-
-                        <tr>
-                            <th>
-
-                            </th>
-                            <td>
-                                <div className={'d-flex'}>
-                                    <input value={studentName} onChange={(e)=>{setStudentName(e.target.value)}} placeholder={"O'quvchi qo'shish"} className={'form-control w-75'}/>
-                                    <button onClick={saveStudent} className={'btn btn-warning'}>+</button>
-                                </div>
-                            </td>
+                    </thead>
+                    <tbody>
+                    {students?.map((item, index) =>
+                        <tr key={item.id}>
+                            <th>{index + 1}</th>
+                            <td>{item.name}</td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+                    )}
 
-                  </tbody>
-              </table>
-          </div>
-      </div>
+
+                    <tr>
+                        <th>
+
+                        </th>
+                        <td>
+                            <CheckUser>
+                                <div className={'d-flex'}>
+                                    <input value={studentName} onChange={(e) => {
+                                        setStudentName(e.target.value)
+                                    }} placeholder={"O'quvchi qo'shish"} className={'form-control w-75'}/>
+                                    <button onClick={saveStudent} className={'btn btn-warning'}>+</button>
+                                </div>
+                            </CheckUser>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }
 

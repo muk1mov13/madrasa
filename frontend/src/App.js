@@ -18,6 +18,7 @@ import NewsHome from "./Components/News/NewsHome";
 import NewsForTeachers from "./Components/News/newsForTeachers";
 import NewsForStudents from "./Components/News/newsForStudents";
 import RatingCourse from "Components/rating/rating-course/rating-course";
+import CheckUser from "./Components/Securty/CheckUser";
 
 function App() {
 

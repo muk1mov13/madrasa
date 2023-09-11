@@ -7,6 +7,7 @@ import {Modal} from 'react-bootstrap';
 import DataLoading from "ui/dataLoading";
 import "./Group.scss"
 import './style.css'
+import CheckUser from "../../Securty/CheckUser";
 function RatingCourse(props) {
     const { courseId } = useParams();
 
@@ -110,15 +111,17 @@ function RatingCourse(props) {
                         </div>
                     )
                 }
-                <div onClick={() => setIsModalOpen(true)}
-                     className="col-lg-2 order-lg-1 order-2 ">
-                    <div
-                        style={{cursor: "pointer"}}
-                        className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
-                        <div className="event_plus">+</div>
-                        <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
-                    </div>
-                </div>
+               <CheckUser>
+                   <div onClick={() => setIsModalOpen(true)}
+                        className="col-lg-2 order-lg-1 order-2 ">
+                       <div
+                           style={{cursor: "pointer"}}
+                           className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
+                           <div className="event_plus">+</div>
+                           <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
+                       </div>
+                   </div>
+               </CheckUser>
 
             </div>
 

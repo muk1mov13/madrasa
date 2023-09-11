@@ -6,11 +6,13 @@ import {Modal} from 'react-bootstrap';
 import DataLoading from "ui/dataLoading";
 import "./Group.scss"
 import './style.css'
+import CheckUser from "../Securty/CheckUser";
+
 function Group(props) {
 
 
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([  ])
+    const [data, setData] = useState([])
     ;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingID, setEditingID] = useState(false);
@@ -25,7 +27,7 @@ function Group(props) {
         setLoading(true)
         setTimeout(() => {
             apiCall('/groups/public', 'get').then(data => {
-                 setData(data.data)
+                setData(data.data)
                 setLoading(false)
             })
         }, 1000)
@@ -94,7 +96,7 @@ function Group(props) {
             <div style={{marginTop: '200px'}} className={'container d-flex gap-4'}>
 
                 {loading ? <DataLoading/> : data?.map(item =>
-                    <div className="col-lg-2 order-lg-1 order-2 " >
+                    <div className="col-lg-2 order-lg-1 order-2 ">
                         <div className="event_date d-flex flex-column align-items-center justify-content-center">
                             <Link to={`lesson/${item.id}`} className="event_day">{item.name}</Link>
                             <div className="event_month">talabalar({item.studentCount})</div>
@@ -104,12 +106,14 @@ function Group(props) {
                 }
                 <div onClick={() => setIsModalOpen(true)}
                      className="col-lg-2 order-lg-1 order-2 ">
-                    <div
-                        style={{cursor: "pointer"}}
-                        className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
-                        <div className="event_plus">+</div>
-                        <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
-                    </div>
+                    <CheckUser>
+                        <div
+                            style={{cursor: "pointer"}}
+                            className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
+                            <div className="event_plus">+</div>
+                            <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
+                        </div>
+                    </CheckUser>
                 </div>
 
             </div>

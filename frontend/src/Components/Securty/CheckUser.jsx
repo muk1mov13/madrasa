@@ -1,31 +1,38 @@
-
 import React, {useEffect, useState} from 'react';
-import apiCall from '../../instance/index'
+import axios from "axios";
 
 
-function CheckUser({ children,margin="my6"}) {
-    const [hasUser, setHasUser]=useState(false)
-    function getUser(){
-        apiCall('/v1/auth/decode', 'get').then(res=>{
-            console.log(res.data)
-            if (res.data === 401) {
+function CheckUser({children, margin = "my6"}) {
+    const [hasUser, setHasUser] = useState(false)
 
-            } else {
-                if(res.data.roles?.some(role => role.name === 'ROLE_SUPER_ADMIN')){
-                    const isAdmin = res.data.roles.some(role => role.name === 'ROLE_SUPER_ADMIN');
-                    setHasUser(isAdmin);
+    function getUser() {
+        let token = localStorage.getItem('access_token');
+        if (token != null) {
+            axios({
+                url: 'http://localhost:8080/api/auth/me', method: 'get', headers: {
+                    Authorization: token,
                 }
-
+            }).then(res => {
+                console.log(res.data)
+                if (res.data.phone !== null) {
+                    setHasUser(true)
                 }
-        })
+            }).catch(err => {
+                console.log(err)
+                setHasUser(false)
+            })
+        } else {
+            setHasUser(false);
+        }
     }
-useEffect(()=>{
-    getUser()
-},[])
-    return(<div>
-            {hasUser?<>{children}</>:<></>}
+
+    useEffect(() => {
+        getUser()
+    }, [])
+    return (<div>
+            {hasUser ? <>{children}</> : <></>}
         </div>
-        );
+    );
 }
 
 export default CheckUser

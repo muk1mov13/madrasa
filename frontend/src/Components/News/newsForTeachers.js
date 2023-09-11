@@ -3,6 +3,7 @@ import Header from "../header/header";
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css'
 import apiCall from "../../instance";
+import CheckUser from "../Securty/CheckUser";
 
 function NewsForTeachers(props) {
     const defData = {
@@ -91,7 +92,7 @@ function NewsForTeachers(props) {
 
     function handleChange(e, id) {
         console.log(e)
-        apiCall('/article/status/' + id,'PUT',null,{status:e}).then(res => {
+        apiCall('/article/status/' + id, 'PUT', null, {status: e}).then(res => {
             console.log(res.data)
             getArticles()
         })
@@ -106,8 +107,10 @@ function NewsForTeachers(props) {
                 <div style={{margin: '220px 100px 0 100px'}} className={'d-flex justify-content-between'}>
                     <h3>Barcha e'lonlar</h3>
                     <input className={'form-control w-25 mx-2'} placeholder={'search'} type="text"/>
-                    <button onClick={() => setVisible(true)} className={'text-light btn btn-warning'}><b
-                        className={'p-3'}>+ E'lon</b></button>
+                    <CheckUser>
+                        <button onClick={() => setVisible(true)} className={'text-light btn btn-warning'}><b
+                            className={'p-3'}>+ E'lon</b></button>
+                    </CheckUser>
                 </div>
                 <hr/>
                 <table className={'table text-center table-striped'}>
@@ -130,14 +133,16 @@ function NewsForTeachers(props) {
                                            checked={item.status}/></td>
                                 <td>{parseDate(item.created_at)}</td>
                                 <td>
-                                    <div className={'btn-group'}>
-                                        <button onClick={() => editArticle(item)}
-                                                className={'text-light btn btn-warning'}>edit
-                                        </button>
-                                        <button onClick={() => deleteArticle(item.id)}
-                                                className={'btn btn-danger'}>delete
-                                        </button>
-                                    </div>
+                                    <CheckUser>
+                                        <div className={'btn-group'}>
+                                            <button onClick={() => editArticle(item)}
+                                                    className={'text-light btn btn-warning'}>edit
+                                            </button>
+                                            <button onClick={() => deleteArticle(item.id)}
+                                                    className={'btn btn-danger'}>delete
+                                            </button>
+                                        </div>
+                                    </CheckUser>
                                 </td>
                             </tr>
                         ))

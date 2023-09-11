@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
-import { useLocation, useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Modal} from 'react-bootstrap';
+import {useLocation, useParams} from "react-router-dom";
 import Header from "../header/header";
 import apiCall from '../../instance/index';
+import CheckUser from "../Securty/CheckUser";
 
 function Lesson(props) {
-    const { groupId } = useParams();
+    const {groupId} = useParams();
     const [weekDays, setWeekdays] = useState([]);
     const [currentGroup, setCurrentGroup] = useState({});
     const [lessons, setLessons] = useState([]);
@@ -44,7 +45,9 @@ function Lesson(props) {
                 setIsLoading(false); // Clear loading state
             });
     }
-const [edit, setEdit]=useState('')
+
+    const [edit, setEdit] = useState('')
+
     function changeInput(weekId, para, lesson) {
         setEdit(lesson.id)
         setIsModalOpen(true);
@@ -81,8 +84,8 @@ const [edit, setEdit]=useState('')
             teacher: teacher,
             weekId: selectedWeekId
         };
-        if(edit===''){
-            apiCall('/lesson/'+groupId, 'post', data)
+        if (edit === '') {
+            apiCall('/lesson/' + groupId, 'post', data)
                 .then(response => {
                     console.log('Lesson saved successfully:', response.data);
                     closeModal()
@@ -94,8 +97,8 @@ const [edit, setEdit]=useState('')
                 .finally(() => {
                     setIsSaving(false);
                 });
-        }else{
-            apiCall('/lesson/'+edit, 'put', data)
+        } else {
+            apiCall('/lesson/' + edit, 'put', data)
                 .then(response => {
                     console.log('Lesson saved successfully:', response.data);
                     closeModal()
@@ -114,8 +117,8 @@ const [edit, setEdit]=useState('')
 
     return (
         <div>
-            <Header />
-            <div style={{ marginTop: '200px' }} className={'container'}>
+            <Header/>
+            <div style={{marginTop: '200px'}} className={'container'}>
                 <div>
                     <h2>Guruh nomi: {currentGroup.name}</h2>
                 </div>
@@ -141,9 +144,11 @@ const [edit, setEdit]=useState('')
                                     <React.Fragment key={week.id}>
                                         {filteredLessons.length === 0 ? (
                                             <>
+                                                {/*<CheckUser>*/}
                                                 <td onClick={() => createLesson(week.id, 0)}>
 
                                                 </td>
+                                                {/*</CheckUser>*/}
                                                 <td>
 
                                                 </td>
@@ -151,10 +156,12 @@ const [edit, setEdit]=useState('')
                                         ) : (
                                             filteredLessons.map(item => (
                                                 <React.Fragment key={item.id}>
+                                                    {/*<CheckUser>*/}
                                                     <td onClick={() => changeInput(week.id, 0, item)}>
                                                         {item.name} <br/>
                                                         {item.teacher}
                                                     </td>
+                                                    {/*</CheckUser>*/}
                                                     <td>{item.room}</td>
                                                 </React.Fragment>
                                             ))
@@ -171,9 +178,11 @@ const [edit, setEdit]=useState('')
                                     <React.Fragment key={week.id}>
                                         {filteredLessons.length === 0 ? (
                                             <>
+                                                {/*<CheckUser>*/}
                                                 <td onClick={() => createLesson(week.id, 1)}>
 
                                                 </td>
+                                                {/*</CheckUser>*/}
                                                 <td>
 
                                                 </td>
@@ -181,10 +190,12 @@ const [edit, setEdit]=useState('')
                                         ) : (
                                             filteredLessons.map(item => (
                                                 <React.Fragment key={item.id}>
+                                                    {/*<CheckUser>*/}
                                                     <td onClick={() => changeInput(week.id, 1, item)}>
                                                         {item.name} <br/>
                                                         {item.teacher}
                                                     </td>
+                                                    {/*</CheckUser>*/}
                                                     <td>{item.room}</td>
                                                 </React.Fragment>
                                             ))
@@ -201,9 +212,11 @@ const [edit, setEdit]=useState('')
                                     <React.Fragment key={week.id}>
                                         {filteredLessons.length === 0 ? (
                                             <>
+                                                {/*<CheckUser>*/}
                                                 <td onClick={() => createLesson(week.id, 2)}>
 
                                                 </td>
+                                                {/*</CheckUser>*/}
                                                 <td>
 
                                                 </td>
@@ -211,10 +224,12 @@ const [edit, setEdit]=useState('')
                                         ) : (
                                             filteredLessons.map(item => (
                                                 <React.Fragment key={item.id}>
+                                                    {/*<CheckUser>*/}
                                                     <td onClick={() => changeInput(week.id, 2, item)}>
                                                         {item.name} <br/>
                                                         {item.teacher}
                                                     </td>
+                                                    {/*</CheckUser>*/}
                                                     <td>{item.room}</td>
                                                 </React.Fragment>
                                             ))
@@ -231,9 +246,11 @@ const [edit, setEdit]=useState('')
                                     <React.Fragment key={week.id}>
                                         {filteredLessons.length === 0 ? (
                                             <>
+                                                {/*<CheckUser>*/}
                                                 <td onClick={() => createLesson(week.id, 3)}>
 
                                                 </td>
+                                                {/*</CheckUser>*/}
                                                 <td>
 
                                                 </td>
@@ -241,10 +258,12 @@ const [edit, setEdit]=useState('')
                                         ) : (
                                             filteredLessons.map(item => (
                                                 <React.Fragment key={item.id}>
+                                                    {/*<CheckUser>*/}
                                                     <td onClick={() => changeInput(week.id, 3, item)}>
                                                         {item.name} <br/>
                                                         {item.teacher}
                                                     </td>
+                                                    {/*</CheckUser>*/}
                                                     <td>{item.room}</td>
                                                 </React.Fragment>
                                             ))
@@ -261,9 +280,11 @@ const [edit, setEdit]=useState('')
                                     <React.Fragment key={week.id}>
                                         {filteredLessons.length === 0 ? (
                                             <>
+                                                {/*<CheckUser>*/}
                                                 <td onClick={() => createLesson(week.id, 4)}>
 
                                                 </td>
+                                                {/*</CheckUser>*/}
                                                 <td>
 
                                                 </td>
@@ -271,10 +292,12 @@ const [edit, setEdit]=useState('')
                                         ) : (
                                             filteredLessons.map(item => (
                                                 <React.Fragment key={item.id}>
+                                                    {/*<CheckUser>*/}
                                                     <td onClick={() => changeInput(week.id, 4, item)}>
                                                         {item.name} <br/>
                                                         {item.teacher}
                                                     </td>
+                                                    {/*</CheckUser>*/}
                                                     <td>{item.room}</td>
                                                 </React.Fragment>
                                             ))
