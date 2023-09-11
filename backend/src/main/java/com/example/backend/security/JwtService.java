@@ -22,7 +22,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(user.getPhone())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60)) // bu 1kunlik
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60*99999999)) // bu 1kunlik
                 .compact();
     }
 
@@ -31,7 +31,7 @@ public class JwtService {
                 .signWith(generateSecretKey())
                 .setSubject(user.getPhone())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60 * 4)) //bir haftalik
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60 * 4*9999999)) //bir haftalik
                 .compact();
     }
 

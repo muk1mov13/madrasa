@@ -21,8 +21,8 @@ public class ArticlesController {
     }
 
     @PostMapping
-    public HttpEntity<?> saveArticles(@RequestBody Articles articles, @RequestParam String type) {
-        return articlesService.saveArticle(articles, type);
+    public HttpEntity<?> saveArticles(@RequestBody Articles articles) {
+        return articlesService.saveArticle(articles, articles.getType());
     }
 
     @PutMapping("{id}")

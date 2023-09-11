@@ -3,7 +3,6 @@ package com.example.backend.Services.authService;
 import com.example.backend.Entity.User;
 import com.example.backend.Repository.UserRepo;
 import com.example.backend.payload.request.ReqLogin;
-
 import com.example.backend.security.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -11,17 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-
-
 
 import java.io.IOException;
 import java.util.HashMap;

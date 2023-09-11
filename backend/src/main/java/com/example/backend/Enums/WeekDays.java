@@ -1,11 +1,10 @@
 package com.example.backend.Enums;
 
 public enum WeekDays {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
+    DUSHANBA,
+    SESHANBA,
+    CHORSHANBA,
+    PAYSHANBA,
+    JUMA,
+    SHANBA
 }

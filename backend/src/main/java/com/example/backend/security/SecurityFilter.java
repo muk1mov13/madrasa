@@ -27,33 +27,35 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String access_token = request.getHeader("Authorization");
-        if (access_token != null) {
-            System.out.println("kirdi");
-            if (!jwtService.validateToken(access_token, response)) {
-            } else {
-                String phone = jwtService.extractSubjectFromJWT(access_token);
-                UserDetails user = userRepository.findByPhone(phone).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                user,
-                                null,
-                                user.getAuthorities()
-                        );
-                auth.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-        } else {
-            if (!request.getRequestURI().endsWith("/public") && request.getRequestURI().equals("")) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.setContentType("application/json");
-                response.getWriter().write("Token is not found");
-                response.getWriter().close();
-            }
-        }
         filterChain.doFilter(request, response);
+        return;
+//        String access_token = request.getHeader("Authorization");
+//        if (access_token != null) {
+//            System.out.println("kirdi");
+//            if (!jwtService.validateToken(access_token, response)) {
+//            } else {
+//                String phone = jwtService.extractSubjectFromJWT(access_token);
+//                UserDetails user = userRepository.findByPhone(phone).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+//                UsernamePasswordAuthenticationToken auth =
+//                        new UsernamePasswordAuthenticationToken(
+//                                user,
+//                                null,
+//                                user.getAuthorities()
+//                        );
+//                auth.setDetails(
+//                        new WebAuthenticationDetailsSource().buildDetails(request)
+//                );
+//                SecurityContextHolder.getContext().setAuthentication(auth);
+//            }
+//        } else {
+//            if (!request.getRequestURI().endsWith("/public") && request.getRequestURI().equals("")) {
+//                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                response.setContentType("application/json");
+//                response.getWriter().write("Token is not found");
+//                response.getWriter().close();
+//            }
+//        }
+//        filterChain.doFilter(request, response);
     }
 }
 
