@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from 'react';
 import apiCall from '../../../instance/index'
 import Header from 'Components/header/header'
@@ -29,8 +28,6 @@ function RatingCourse(props) {
         setTimeout(() => {
             apiCall('/groups/public', 'get').then(data => {
                 setData(data.data)
-                console.log(data.data)
-                console.log(courseId)
                 setLoading(false)
             })
         }, 1000)
@@ -102,13 +99,16 @@ function RatingCourse(props) {
 
                 {loading ? <DataLoading/> :
 
-                    data?.filter(group=>group.kurs==courseId).map(item =>
-                        <div className="col-lg-2 order-lg-1 order-2 " >
-                            <div className="event_date d-flex flex-column align-items-center justify-content-center">
-                                <Link to={`${item.id}`} className="event_day">{item.name}</Link>
-                                <div className="event_month">talabalar({item.studentCount})</div>
+                    data?.filter(group => group.kurs == courseId).map(item =>
+                        <Link to={`${item.id}`}>
+                            <div className="col-lg-2 order-lg-1 order-2 ">
+                                <div
+                                    className="event_date d-flex flex-column align-items-center justify-content-center">
+                                    <Link to={`${item.id}`} className="event_day">{item.name}</Link>
+                                    <div className="event_month">talabalar({item.studentCount})</div>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     )
                 }
                <CheckUser>

@@ -140,6 +140,7 @@
   .hero_box:hover {
     background: #ffb606;
   }
+
   .hero_box img:hover {
     fill: white !important;
   }
@@ -202,6 +203,7 @@
     }
     .logo_container {
       padding-left: 15px;
+      cursor: pointer;
     }
     .logo img {
       width: 30px;

@@ -2,30 +2,32 @@ import React from 'react';
 import logo from "./images/logo.png"
 import phoneCall from "./images/phone-call.svg"
 import "./header.scss"
+import {Link, useNavigate} from "react-router-dom";
 
 function Header(props) {
+    const navigate = useNavigate()
+
     return (
         <div className={"my-header"}>
             <header className="header d-flex align-items-center ">
                 <div className="header_content d-flex flex-row align-items-center">
                     {/* Logo */}
-                    <div className="logo_container">
-                        <div className="logo">
-                            <img src={logo} alt="logo"/>
-                            <span>course</span>
+                    <Link to={"/"}>
+                        <div className="logo_container">
+                            <div className="logo">
+                                <img src={logo} alt="logo"/>
+                                <span>course</span>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Main Navigation */}
                     <nav className="main_nav_container">
                         <div className="main_nav">
                             <ul className="main_nav_list">
-                                <li className="main_nav_item">home</li>
-                                <li className="main_nav_item">about us</li>
-                                <li className="main_nav_item">courses</li>
-                                <li className="main_nav_item">elements</li>
-                                <li className="main_nav_item">news</li>
-                                <li className="main_nav_item">contact</li>
+                                <li onClick={() => navigate("/news")} className="main_nav_item">e'lonlar</li>
+                                <li onClick={() => navigate("/timetable")} className="main_nav_item">dars jadvali</li>
+                                <li onClick={() => navigate("/rating")} className="main_nav_item">rating</li>
                             </ul>
                         </div>
                     </nav>
