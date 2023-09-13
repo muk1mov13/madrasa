@@ -19,8 +19,7 @@ function Home(props) {
                             <div
                                 className="hero_slide_container d-flex flex-column align-items-center justify-content-center">
                                 <div className="hero_slide_content text-center">
-                                    <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Get
-                                        your <span>Education</span> today!</h1>
+                                    <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Ilm o‘rganish har bir <span>Musulmon</span> uchun farzdir!</h1>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +94,7 @@ function Home(props) {
 
                                     <div className="hero_box_content">
                                         <h2 className="hero_box_title">E'lonlar</h2>
-                                        <p className="hero_box_link">view more</p>
+                                        <p className="hero_box_link">Batafsil</p>
                                     </div>
                                 </div>
                             </Link>
@@ -166,7 +165,7 @@ function Home(props) {
                                     </svg>
                                     <div className="hero_box_content">
                                         <h2 className="hero_box_title">Dars jadval</h2>
-                                        <p className="hero_box_link">view more</p>
+                                        <p className="hero_box_link">Batafsil</p>
                                     </div>
                                 </div>
                             </Link>
@@ -237,7 +236,7 @@ function Home(props) {
                                     </svg>
                                     <div className="hero_box_content">
                                         <h2 className="hero_box_title">Rating</h2>
-                                        <p className="hero_box_link">view more</p>
+                                        <p className="hero_box_link">Batafsil</p>
                                     </div>
                                 </div>
                             </Link>

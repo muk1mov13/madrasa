@@ -13,12 +13,10 @@ function CheckUser({children, margin = "my6"}) {
                     Authorization: token,
                 }
             }).then(res => {
-                console.log(res.data)
                 if (res.data.phone !== null) {
                     setHasUser(true)
                 }
             }).catch(err => {
-                console.log(err)
                 setHasUser(false)
             })
         } else {

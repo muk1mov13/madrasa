@@ -6,8 +6,11 @@ import com.example.backend.Entity.Subject;
 import com.example.backend.Repository.GroupRepository;
 import com.example.backend.Repository.SubjectRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,8 +21,9 @@ public class SubjectServiceImpl implements SubjectService {
     private final GroupRepository groupRepository;
 
     @Override
-    public void getSubject(UUID id) {
-        subjectRepo.findByGroup_Id(id);
+    public HttpEntity<?> getSubject(UUID id) {
+        List<Subject> byGroupId = subjectRepo.findByGroup_IdOrderById(id);
+        return ResponseEntity.ok(byGroupId);
     }
 
     @Override
@@ -35,16 +39,16 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void deleteSubject(UUID id) {
+    public void deleteSubject(Integer id) {
         subjectRepo.deleteById(id);
     }
 
     @Override
-    public void updateSubject(UUID id, SubjectDTO subjectDTO) {
+    public void updateSubject(Integer id, SubjectDTO subjectDTO) {
         Subject subject = subjectRepo.findById(id).get();
         Subject subject1 = new Subject(
                 subject.getId(),
-                subject.getName(),
+                subjectDTO.getName(),
                 subject.getGroup()
         );
         subjectRepo.save(subject1);

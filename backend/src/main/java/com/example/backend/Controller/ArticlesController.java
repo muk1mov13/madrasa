@@ -4,6 +4,7 @@ import com.example.backend.Entity.Articles;
 import com.example.backend.Services.articlesService.ArticlesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,6 +24,15 @@ public class ArticlesController {
     @PostMapping
     public HttpEntity<?> saveArticles(@RequestBody Articles articles) {
         return articlesService.saveArticle(articles, articles.getType());
+    }
+
+    @PutMapping("/status/{id}")
+    public HttpEntity<?> updateActive(@PathVariable UUID id, @RequestParam String status) {
+        System.out.println(status);
+        if (status.equals("")) {
+            return ResponseEntity.ok().body("aktivlikni tanlang!");
+        }
+        return articlesService.updateActive(id, status);
     }
 
     @PutMapping("{id}")

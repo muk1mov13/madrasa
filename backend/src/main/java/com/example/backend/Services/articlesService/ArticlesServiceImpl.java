@@ -54,6 +54,14 @@ public class ArticlesServiceImpl implements ArticlesService {
     }
 
     @Override
+    public HttpEntity<?> updateActive(UUID id, String active) {
+        Articles foundedArticle = articlesRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
+        foundedArticle.setStatus(Boolean.valueOf(active));
+        Articles saved = articlesRepository.save(foundedArticle);
+        return ResponseEntity.ok(saved);
+    }
+
+    @Override
     public HttpEntity<?> deleteArticle(UUID id) {
         articlesRepository.deleteById(id);
         return ResponseEntity.ok().body("");

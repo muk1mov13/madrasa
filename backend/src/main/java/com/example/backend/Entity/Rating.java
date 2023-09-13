@@ -22,4 +22,10 @@ public class Rating {
     @ManyToOne
     private Student student;
     private Integer mark;
+
+    public Rating(Subject subject, Student student, Integer mark) {
+        this.subject = subject;
+        this.student = student;
+        this.mark = mark;
+    }
 }

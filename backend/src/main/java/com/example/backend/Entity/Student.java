@@ -15,15 +15,18 @@ import java.util.UUID;
 @Builder
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     @ManyToOne
     private Group group;
-
-    public Student(String name, Group group) {
+    private boolean arxive;
+    private String color;
+    public Student(String name, Group group, boolean arxive, String color) {
 
         this.name = name;
         this.group = group;
+        this.arxive=arxive;
+        this.color=color;
     }
 }

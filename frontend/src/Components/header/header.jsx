@@ -24,7 +24,7 @@ function Header(props) {
                         <div className="logo_container">
                             <div className="logo">
                                 <img src={logo} alt="logo"/>
-                                <span>course</span>
+                                <span>Madrasa</span>
                             </div>
                         </div>
                     </Link>
@@ -35,14 +35,14 @@ function Header(props) {
                             <ul className="main_nav_list">
                                 <li onClick={() => navigate("/news")} className="main_nav_item">e'lonlar</li>
                                 <li onClick={() => navigate("/timetable")} className="main_nav_item">dars jadvali</li>
-                                <li onClick={() => navigate("/rating")} className="main_nav_item">rating</li>
+                                <li onClick={() => navigate("/rating")} className="main_nav_item">reyting</li>
                                 {
                                     hasUser ?
-                                        <div className={'btn btn-warning'}>
                                             <CheckUser>
-                                                <li onClick={logout} className="main_nav_item text-light">log out</li>
+                                                <div className={'btn btn-warning'}>
+                                                    <li onClick={logout} className="main_nav_item text-light">log out</li>
+                                                </div>
                                             </CheckUser>
-                                        </div>
                                         :
                                         <li onClick={() => navigate("/login")}
                                             className="main_nav_item btn btn-warning text-light">login</li>

@@ -10,7 +10,7 @@ function NewsForTeachers(props) {
         title: '',
         body: '',
         type: 'teachers',
-        status: false
+        status: ''
     }
 
     const [data, setData] = useState(defData)
@@ -19,6 +19,8 @@ function NewsForTeachers(props) {
     const [loading, setLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [editItem, setEditItem] = useState(null);
+    const [tableActive, setTableActive] = useState(false);
+    const hasUser = localStorage.getItem('access_token')
 
 
     useEffect(() => {
@@ -30,7 +32,6 @@ function NewsForTeachers(props) {
         setTimeout(() => {
             apiCall('/article/public', 'get', null, {type: 'teachers'}).then(res => {
                 setArticles(res.data)
-                console.log(res.data)
                 setLoading(false)
             })
         }, 1000)
@@ -92,10 +93,16 @@ function NewsForTeachers(props) {
 
     function handleChange(e, id) {
         console.log(e)
-        apiCall('/article/status/' + id, 'PUT', null, {status: e}).then(res => {
-            console.log(res.data)
-            getArticles()
-        })
+        if (e !== '') {
+            apiCall('/article/status/' + id, 'PUT', null, {status: e}).then(res => {
+                console.log(res.data)
+                getArticles()
+                setTableActive(false)
+            })
+        } else {
+            alert('aktivligini tanlang!')
+        }
+        setTableActive(false)
     }
 
     return (
@@ -116,30 +123,45 @@ function NewsForTeachers(props) {
                 <table className={'table text-center table-striped'}>
                     <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Active</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th>Mazmun</th>
+                        <th>Batafsil</th>
+                        <th>Holati</th>
+                        <th>Vaqt</th>
+                        <th>O'zgartirish</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
                         articles.map(item => (
                             <tr>
-                                <td>{item.title}</td>
-                                <td>{item.body}</td>
-                                <td><input type="checkbox" onChange={(e) => handleChange(e.target.checked, item.id)}
-                                           checked={item.status}/></td>
-                                <td>{parseDate(item.created_at)}</td>
+                                <td><b>{item.title}</b></td>
+                                <td><b>{item.body}</b></td>
+                                {
+                                    hasUser ?
+                                        <td style={{cursor: 'pointer'}} onClick={() => setTableActive(true)}>
+                                            {
+                                                tableActive ? <select
+                                                    value={item.status + ''}
+                                                    className={'form-select'}
+                                                    onChange={(e) => handleChange(e.target.value, item.id)}>
+                                                    <option value="true">Aktiv</option>
+                                                    <option value="false">Aktiv emas</option>
+                                                </select> : item.status !== null && item.status ? <b>aktiv</b> :
+                                                    <b>aktive emas</b>
+                                            }
+                                        </td>
+                                        : <td>{item.status !== null && item.status ? <b>aktiv</b> :
+                                            <b>aktiv emas</b>}</td>
+                                }
+                                <td><b>{parseDate(item.created_at)}</b></td>
                                 <td>
                                     <CheckUser>
                                         <div className={'btn-group'}>
                                             <button onClick={() => editArticle(item)}
-                                                    className={'text-light btn btn-warning'}>edit
+                                                    className={'text-light btn btn-warning'}>o'zgartirish
                                             </button>
                                             <button onClick={() => deleteArticle(item.id)}
-                                                    className={'btn btn-danger'}>delete
+                                                    className={'btn btn-danger'}>o'chirish
                                             </button>
                                         </div>
                                     </CheckUser>
@@ -151,7 +173,7 @@ function NewsForTeachers(props) {
                 </table>
             </div>
 
-            <Rodal height={350} visible={visible} onClose={() => setVisible(false)}>
+            <Rodal height={350} visible={visible} onClose={closeModal}>
                 <form onSubmit={submitForm}>
                     <div>
                         <div className={"my-3"}>
@@ -171,14 +193,16 @@ function NewsForTeachers(props) {
                                       minLength={5}/>
                         </div>
                         <div>
-                            <label className={'d-flex gap-2 align-items-center'}>
-                                <h4>aktivligi</h4>
-                                <input type="checkbox"
-                                       onChange={(e) => setData({...data, status: e.target.checked})}
-                                       checked={data.status}/>
-                            </label>
+                            <select value={data.status + ''}
+                                    onChange={(e) => setData({...data, status: e.target.value})}
+                                    className={'form-select'}>
+                                <option selected value="">Aktivligini tanlang</option>
+                                <option value="true">Aktiv</option>
+                                <option value="false">Aktiv emas</option>
+                            </select>
                         </div>
-                        <button onClick={saveArticle} className={"form-control btn btn-primary"}>+ qo'shish</button>
+                        <button onClick={saveArticle} className={"form-control my-4 btn btn-primary"}>+ qo'shish
+                        </button>
                     </div>
                 </form>
             </Rodal>

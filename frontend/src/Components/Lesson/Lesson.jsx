@@ -4,6 +4,9 @@ import {useLocation, useParams} from "react-router-dom";
 import Header from "../header/header";
 import apiCall from '../../instance/index';
 import CheckUser from "../Securty/CheckUser";
+import subjectImg from './books.png';
+import teacherImg from './teacher.png';
+import './lesson.css'
 
 function Lesson(props) {
     const {groupId} = useParams();
@@ -123,241 +126,127 @@ function Lesson(props) {
                     <h2>Guruh nomi: {currentGroup.name}</h2>
                 </div>
                 <div>
-                    <table className={'table table-bordered'}>
+                    <table className={'table table-bordered text-center'}>
                         <thead>
-                        <tr>
-                            <th></th>
-                            {weekDays.map(week => (
+                        <tr className={'table-primary'}>
+                            <th scope={'col'}>Para</th>
+                            {weekDays.map((week, index) => (
                                 <React.Fragment key={week.id}>
-                                    <th>{week.name}</th>
-                                    <th>xona</th>
+                                    <th
+                                        className={index % 2 == 0 ? 'table-warning' : 'table-primary'}
+                                        scope={'col'}>{week.name}</th>
+                                    <th className={index % 2 == 0 ? 'table-warning' : 'table-primary'}
+                                        scope={'col'}>xona
+                                    </th>
                                 </React.Fragment>
                             ))}
                         </tr>
                         </thead>
+
                         <tbody>
-                        <tr>
-                            <td>0</td>
-                            {weekDays.map(week => {
-                                const filteredLessons = lessons.filter(les => les.para === 0 && les.weekDay?.id === week.id);
-                                return (
-                                    <React.Fragment key={week.id}>
-                                        {filteredLessons.length === 0 ? (
-                                            <>
-                                                {/*<CheckUser>*/}
-                                                <td onClick={() => createLesson(week.id, 0)}>
 
-                                                </td>
-                                                {/*</CheckUser>*/}
-                                                <td>
+                        {[0, 1, 2, 3, 4].map(darsSoati =>
+                            <tr>
+                                <td className={'table-primary'}><b>{darsSoati}</b></td>
+                                {weekDays.map((week, index) => {
+                                    const filteredLessons = lessons.filter(les => les.para === darsSoati && les.weekDay?.id === week.id);
+                                    return (
+                                        <React.Fragment key={week.id}>
+                                            {filteredLessons.length === 0 ? (
+                                                <>
+                                                    <td onClick={() => createLesson(week.id, darsSoati)}>
+                                                        {
 
-                                                </td>
-                                            </>
-                                        ) : (
-                                            filteredLessons.map(item => (
-                                                <React.Fragment key={item.id}>
-                                                    {/*<CheckUser>*/}
-                                                    <td onClick={() => changeInput(week.id, 0, item)}>
-                                                        {item.name} <br/>
-                                                        {item.teacher}
+                                                        }
                                                     </td>
-                                                    {/*</CheckUser>*/}
-                                                    <td>{item.room}</td>
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            {weekDays.map(week => {
-                                const filteredLessons = lessons.filter(les => les.para === 1 && les.weekDay?.id === week.id);
-                                return (
-                                    <React.Fragment key={week.id}>
-                                        {filteredLessons.length === 0 ? (
-                                            <>
-                                                {/*<CheckUser>*/}
-                                                <td onClick={() => createLesson(week.id, 1)}>
+                                                    <td></td>
+                                                </>
+                                            ) : (
+                                                filteredLessons.map((item) => (
+                                                    <React.Fragment key={item.id}>
+                                                        <td
+                                                            className={index % 2 == 0 ? 'table-warning' : 'table-primary'}
+                                                            onClick={() => changeInput(week.id, darsSoati, item)}>
+                                                            <b className={'text-success'}><img width={25} height={25}
+                                                                                               src={subjectImg}/> {item.name}
+                                                            </b>
+                                                            <br/>
+                                                            <div className={'text-start'}>
+                                                                <b className={'text-primary'}><img width={25}
+                                                                                                   height={25}
+                                                                                                   src={teacherImg}/> {item.teacher}
+                                                                </b>
+                                                            </div>
 
-                                                </td>
-                                                {/*</CheckUser>*/}
-                                                <td>
+                                                        </td>
+                                                        <td
+                                                            style={{fontSize: '22px'}}
+                                                            className={index % 2 == 0 ? 'table-warning text-danger' : 'table-primary text-danger'}>{item.room}
+                                                        </td>
+                                                    </React.Fragment>
+                                                ))
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </tr>
+                        )}
 
-                                                </td>
-                                            </>
-                                        ) : (
-                                            filteredLessons.map(item => (
-                                                <React.Fragment key={item.id}>
-                                                    {/*<CheckUser>*/}
-                                                    <td onClick={() => changeInput(week.id, 1, item)}>
-                                                        {item.name} <br/>
-                                                        {item.teacher}
-                                                    </td>
-                                                    {/*</CheckUser>*/}
-                                                    <td>{item.room}</td>
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            {weekDays.map(week => {
-                                const filteredLessons = lessons.filter(les => les.para === 2 && les.weekDay?.id === week.id);
-                                return (
-                                    <React.Fragment key={week.id}>
-                                        {filteredLessons.length === 0 ? (
-                                            <>
-                                                {/*<CheckUser>*/}
-                                                <td onClick={() => createLesson(week.id, 2)}>
-
-                                                </td>
-                                                {/*</CheckUser>*/}
-                                                <td>
-
-                                                </td>
-                                            </>
-                                        ) : (
-                                            filteredLessons.map(item => (
-                                                <React.Fragment key={item.id}>
-                                                    {/*<CheckUser>*/}
-                                                    <td onClick={() => changeInput(week.id, 2, item)}>
-                                                        {item.name} <br/>
-                                                        {item.teacher}
-                                                    </td>
-                                                    {/*</CheckUser>*/}
-                                                    <td>{item.room}</td>
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            {weekDays.map(week => {
-                                const filteredLessons = lessons.filter(les => les.para === 3 && les.weekDay?.id === week.id);
-                                return (
-                                    <React.Fragment key={week.id}>
-                                        {filteredLessons.length === 0 ? (
-                                            <>
-                                                {/*<CheckUser>*/}
-                                                <td onClick={() => createLesson(week.id, 3)}>
-
-                                                </td>
-                                                {/*</CheckUser>*/}
-                                                <td>
-
-                                                </td>
-                                            </>
-                                        ) : (
-                                            filteredLessons.map(item => (
-                                                <React.Fragment key={item.id}>
-                                                    {/*<CheckUser>*/}
-                                                    <td onClick={() => changeInput(week.id, 3, item)}>
-                                                        {item.name} <br/>
-                                                        {item.teacher}
-                                                    </td>
-                                                    {/*</CheckUser>*/}
-                                                    <td>{item.room}</td>
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            {weekDays.map(week => {
-                                const filteredLessons = lessons.filter(les => les.para === 4 && les.weekDay?.id === week.id);
-                                return (
-                                    <React.Fragment key={week.id}>
-                                        {filteredLessons.length === 0 ? (
-                                            <>
-                                                {/*<CheckUser>*/}
-                                                <td onClick={() => createLesson(week.id, 4)}>
-
-                                                </td>
-                                                {/*</CheckUser>*/}
-                                                <td>
-
-                                                </td>
-                                            </>
-                                        ) : (
-                                            filteredLessons.map(item => (
-                                                <React.Fragment key={item.id}>
-                                                    {/*<CheckUser>*/}
-                                                    <td onClick={() => changeInput(week.id, 4, item)}>
-                                                        {item.name} <br/>
-                                                        {item.teacher}
-                                                    </td>
-                                                    {/*</CheckUser>*/}
-                                                    <td>{item.room}</td>
-                                                </React.Fragment>
-                                            ))
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tr>
 
                         </tbody>
+
                     </table>
                 </div>
             </div>
-            <div className={'umodal'}>
-                <Modal show={isModalOpen} onHide={closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Dars</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <label>Dars nomi:</label>
-                        <input
-                            className={"form-control"}
-                            type={'text'}
-                            value={lessonName}
-                            placeholder={""}
-                            onChange={(e) => {
-                                setLessonName(e.target.value);
-                            }}
-                        />
-                        <label className={'my-2'}>Dars o'qituvchisi</label>
-                        <input
-                            className={"form-control mt-2"}
-                            type={'text'}
-                            value={teacher}
-                            placeholder={"O'qituvchi nomi.."}
-                            onChange={(e) => {
-                                setTeacher(e.target.value);
-                            }}
-                        />
-                        <label className={'my-2'}>Dars xonasi</label>
-                        <input
-                            className={"form-control mt-2"}
-                            type={'text'}
-                            value={room}
-                            placeholder={"Xona.."}
-                            onChange={(e) => {
-                                setRoom(e.target.value);
-                            }}
-                        />
-                        <div
-                            type={"submit"}
-                            disabled={isSaving || isLoading}
-                            className=" my-1 button button_color_1 text-center trans_200 btn btn-warning"
-                            onClick={saveLesson}
-                        >
-                            {isSaving ? 'Saving...' : 'Saqlash'}
-                        </div>
-                    </Modal.Body>
-                </Modal>
-            </div>
+            <CheckUser>
+                <div className={'umodal'}>
+                    <Modal show={isModalOpen} onHide={closeModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Dars</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <label>Dars nomi:</label>
+                            <input
+                                className={"form-control"}
+                                type={'text'}
+                                value={lessonName}
+                                placeholder={""}
+                                onChange={(e) => {
+                                    setLessonName(e.target.value);
+                                }}
+                            />
+                            <label className={'my-2'}>Dars o'qituvchisi</label>
+                            <input
+                                className={"form-control mt-2"}
+                                type={'text'}
+                                value={teacher}
+                                placeholder={"O'qituvchi nomi.."}
+                                onChange={(e) => {
+                                    setTeacher(e.target.value);
+                                }}
+                            />
+                            <label className={'my-2'}>Dars xonasi</label>
+                            <input
+                                className={"form-control mt-2"}
+                                type={'text'}
+                                value={room}
+                                placeholder={"Xona.."}
+                                onChange={(e) => {
+                                    setRoom(e.target.value);
+                                }}
+                            />
+                            <div
+                                type={"submit"}
+                                disabled={isSaving || isLoading}
+                                className=" my-1 button button_color_1 text-center trans_200 btn btn-warning"
+                                onClick={saveLesson}
+                            >
+                                {isSaving ? 'Saving...' : 'Saqlash'}
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+                </div>
+            </CheckUser>
         </div>
     );
 }

@@ -12,6 +12,7 @@ public interface ArticlesService {
     HttpEntity<?> saveArticle(Articles articles,String type);
 
     HttpEntity<?> updateArticle(UUID id, Articles articles);
+    HttpEntity<?> updateActive(UUID id, String active);
 
     HttpEntity<?> deleteArticle(UUID id);
 

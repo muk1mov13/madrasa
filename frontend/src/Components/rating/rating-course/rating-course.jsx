@@ -94,39 +94,41 @@ function RatingCourse(props) {
             <div>
                 <Header/>
             </div>
-            <div>
-                <h1></h1>
-            </div>
-            <div style={{marginTop: '200px'}} className={'container d-flex gap-4'}>
+            <div style={{marginTop: '200px'}} className={'container '}>
+                <div>
+                    <h1>{courseId}-kurs</h1>
+                </div>
+                <div  className={'container d-flex gap-4'}>
 
-                {loading ? <DataLoading/> :
+                    {loading ? <DataLoading/> :
 
-                    data?.filter(group => group.kurs == courseId).map(item =>
-                        <Link to={`${item.id}`}>
-                            <div className="col-lg-2 order-lg-1 order-2 ">
-                                <div
-                                    className="event_date d-flex flex-column align-items-center justify-content-center">
-                                    <Link to={`${item.id}`} className="event_day">{item.name}</Link>
-                                    <div className="event_month">talabalar({item.studentCount})</div>
+                        data?.filter(group => group.kurs == courseId).map(item =>
+                            <Link to={`${item.id}`}>
+                                <div className="col-lg-2 order-lg-1 order-2 ">
+                                    <div
+                                        className="event_date d-flex flex-column align-items-center justify-content-center">
+                                        <Link to={`${item.id}`} className="event_day">{item.name}</Link>
+                                        <div className="event_month">talabalar({item.studentCount})</div>
+                                    </div>
                                 </div>
+                            </Link>
+                        )
+                    }
+                    <CheckUser>
+                        <div onClick={() => setIsModalOpen(true)}
+                             className="col-lg-2 order-lg-1 order-2 ">
+                            <div
+                                style={{cursor: "pointer"}}
+                                className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
+                                <div className="event_plus">+</div>
+                                <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
                             </div>
-                        </Link>
-                    )
-                }
-               <CheckUser>
-                   <div onClick={() => setIsModalOpen(true)}
-                        className="col-lg-2 order-lg-1 order-2 ">
-                       <div
-                           style={{cursor: "pointer"}}
-                           className="rounded cursor-pointer event_date d-flex flex-column align-items-center justify-content-center">
-                           <div className="event_plus">+</div>
-                           <div className="event_month mx-1 text-center">yangi guruh qo'shish</div>
-                       </div>
-                   </div>
-               </CheckUser>
+                        </div>
+                    </CheckUser>
+
+                </div>
 
             </div>
-
 
             <div className={' umodal'}>
                 <Modal show={isModalOpen} onHide={closeModal}>

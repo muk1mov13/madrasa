@@ -22,7 +22,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public HttpEntity<?> getStudent(UUID id) {
 
-      return ResponseEntity.ok( studentRepo.findByGroup_Id(id));
+      return ResponseEntity.ok( studentRepo.findAllByGroup_IdAndArxiveOrderById(id, true));
     }
 
     @Override
@@ -31,24 +31,36 @@ public class StudentServiceImpl implements StudentService {
 
         Student student = new Student(
                 studentDTO.getName(),
-                byId.get()
+                byId.get(),
+                true,
+                ""
         );
         studentRepo.save(student);
 
     }
 
     @Override
-    public void deleteStudnet(UUID id) {
-        studentRepo.deleteById(id);
-    }
-
-    @Override
-    public void updateStudent(UUID id, StudentDTO studentDTO) {
+    public void deleteStudnet(Integer id) {
         Student student = studentRepo.findById(id).get();
         Student student1 = new Student(
                 student.getId(),
                 student.getName(),
-                student.getGroup()
+                student.getGroup(),
+                false,
+                ""
+        );
+        studentRepo.save(student1);
+    }
+
+    @Override
+    public void updateStudent(Integer id, StudentDTO studentDTO) {
+        Student student = studentRepo.findById(id).get();
+        Student student1 = new Student(
+                student.getId(),
+                studentDTO.getName(),
+                student.getGroup(),
+                true,
+                student.getColor()
         );
         studentRepo.save(student1);
     }

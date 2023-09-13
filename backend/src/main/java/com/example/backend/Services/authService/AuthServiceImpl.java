@@ -42,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
 
             User user = userRepository.findByPhone(reqLogin.getPhone()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
             String access_token = jwtService.generateJWT(user);
-            System.out.println(access_token);
             Map<String, String> map = new HashMap<>();
             map.put("access_token", access_token);
             return ResponseEntity.ok(map);

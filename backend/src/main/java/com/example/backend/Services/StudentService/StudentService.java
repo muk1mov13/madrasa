@@ -12,7 +12,7 @@ public interface StudentService {
 
     void addStudent(StudentDTO studentDTO);
 
-    void deleteStudnet(UUID id);
+    void deleteStudnet(Integer id);
 
-    void updateStudent(UUID id, StudentDTO studentDTO);
+    void updateStudent(Integer id, StudentDTO studentDTO);
 }
