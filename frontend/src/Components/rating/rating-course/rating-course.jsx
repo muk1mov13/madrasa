@@ -8,6 +8,8 @@ import DataLoading from "ui/dataLoading";
 import "./Group.scss"
 import './style.css'
 import CheckUser from "../../Securty/CheckUser";
+import editIcon from "../../Group/pen.png";
+import deleteIcon from "../../Group/bin.png";
 function RatingCourse(props) {
     const { courseId } = useParams();
 
@@ -28,7 +30,8 @@ function RatingCourse(props) {
         setLoading(true)
         setTimeout(() => {
             apiCall('/groups/public', 'get').then(data => {
-                setData(data.data)
+                console.log(data)
+                setData(data?.data)
                setLoading(false)
             })
         }, 1000)
@@ -43,7 +46,7 @@ function RatingCourse(props) {
         if (isSaving) return;
         setIsSaving(true);
         if (!editingID) {
-            apiCall("/groups", "POST", form).then(({data}) => {
+            apiCall("/groups", "POST", form).then((res) => {
                 getData()
                 setIsSaving(false)
                 setIsModalOpen(false);
@@ -74,20 +77,31 @@ function RatingCourse(props) {
         setIsModalOpen(true);
     };
 
-
-    function deleteItem(id) {
-        setLoading(true)
-        setTimeout(() => {
-            apiCall("/groups/" + id, "DELETE", null).then(res => {
-                if (localStorage.getItem('selectedGroup') === id) {
-                    localStorage.removeItem('selectedGroup')
-                }
-                getData();
-            })
-        }, 1000);
+const [askDelete, setAskDelete]=useState(false)
+    const [deleteGroup, setDeleteGroup]=useState({})
+    function deleteItem(group) {
+        setDeleteGroup(group)
+       setAskDelete(true)
     }
+function reallyDelete(id){
+    setLoading(true)
+    setAskDelete(false)
+    setTimeout(() => {
+        apiCall("/groups/" + id, "DELETE", null).then(res => {
+            if (localStorage.getItem('selectedGroup') === id) {
+                localStorage.removeItem('selectedGroup')
+            }
+            getData();
+        })
+    }, 1000);
+}
 
     const navigate = useNavigate();
+
+    function closeAskModal() {
+        setAskDelete(false)
+    }
+
     return (
 
         <div className={'my-group'}>
@@ -103,15 +117,26 @@ function RatingCourse(props) {
                     {loading ? <DataLoading/> :
 
                         data?.filter(group => group.kurs == courseId).map(item =>
-                            <Link to={`${item.id}`}>
+                            <div>
                                 <div className="col-lg-2 order-lg-1 order-2 ">
                                     <div
                                         className="event_date d-flex flex-column align-items-center justify-content-center">
                                         <Link to={`${item.id}`} className="event_day">{item.name}</Link>
-                                        <div className="event_month">talabalar({item.studentCount})</div>
+                                        <Link  to={`${item.id}`} className="event_month">talabalar({item.studentCount})</Link>
+                                        <CheckUser>
+                                            <div className={'btn-group m-1'}>
+                                                <button onClick={() => editItem(item)} className={'btn btn-outline-warning'}><img
+                                                    src={editIcon} width={25}
+                                                    height={25} alt=""/></button>
+                                                <button onClick={() => deleteItem(item)} className={'btn btn-outline-warning'}>
+                                                    <img src={deleteIcon} width={25}
+                                                         height={25} alt=""/></button>
+                                            </div>
+                                        </CheckUser>
                                     </div>
+
                                 </div>
-                            </Link>
+                            </div>
                         )
                     }
                     <CheckUser>
@@ -128,6 +153,18 @@ function RatingCourse(props) {
 
                 </div>
 
+            </div>
+            <div className={' umodal'}>
+                <Modal show={askDelete} onHide={closeAskModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{deleteGroup.name} guruhini bazadan o'chirilsinmi</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Footer>
+                        <button className={'btn btn-warning'} onClick={()=>reallyDelete(deleteGroup.id)}>ha</button>
+                        <button onClick={()=>setAskDelete(false)} className={'btn btn-info'}>yo'q</button>
+
+                    </Modal.Footer>
+                  </Modal>
             </div>
 
             <div className={' umodal'}>

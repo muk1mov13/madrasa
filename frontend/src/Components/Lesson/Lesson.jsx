@@ -5,8 +5,8 @@ import Header from "../header/header";
 import apiCall from '../../instance/index';
 import CheckUser from "../Securty/CheckUser";
 import subjectImg from './books.png';
-import teacherImg from './teacher.png';
-import './lesson.css'
+import teacherImg from './teache.png';
+
 
 function Lesson(props) {
     const {groupId} = useParams();

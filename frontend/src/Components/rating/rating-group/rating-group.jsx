@@ -5,14 +5,13 @@ import {useParams} from "react-router-dom";
 import apiCall from "../../../instance";
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
-
 function RatingGroup(props) {
     const {groupId} = useParams();
 
     const [currentGroup, setCurrentGroup] = useState({});
     const [students, setStudents] = useState([])
     const [subjects, setSubjects] = useState([])
-    const [ratings, setRatings] = useState([])
+    const [ratings, setRatings]=useState([])
 
 
     const [studentName, setStudentName] = useState('')
@@ -24,19 +23,17 @@ function RatingGroup(props) {
         })
         apiCall('/student/public/' + groupId, 'get').then(res => {
 
-            setStudents(res.data)
+             setStudents(res.data)
         })
 
         apiCall('/subject/' + groupId, 'get').then(res => {
-            setSubjects(res.data)
+             setSubjects(res.data)
         })
         apiCall('/rating/' + groupId, 'get').then(res => {
             setRatings(res.data.body)
         })
 
     }
-
-    console.log(ratings)
 
     useEffect(() => {
         getData()
@@ -55,6 +52,7 @@ function RatingGroup(props) {
                 getData()
                 setStudentName('')
             }
+
         )
     }
 
@@ -74,8 +72,7 @@ function RatingGroup(props) {
     }
 
     const [inputValue, setInputValue] = useState('');
-    const [show, setShow] = useState('')
-
+    const [show, setShow]=useState('')
     function createRating(studentId, subjectId) {
         setShow('')
         if (inputValue === '') {
@@ -95,16 +92,14 @@ function RatingGroup(props) {
         window.location.reload()
 
     }
-
-    function setInputValueJon(son) {
-        if (son > 100) {
+    function setInputValueJon(son){
+        if(son>100){
             alert("siz 100 dan katta son kirita olmaysiz")
-        } else {
+        }else {
             setInputValue(son)
         }
     }
-
-    function editRating(ratingId, studentId, subjectId) {
+    function editRating(ratingId, studentId, subjectId){
         if (inputValue === '') {
             return;
         }
@@ -114,36 +109,35 @@ function RatingGroup(props) {
             mark: inputValue
         };
 
-        apiCall('/rating/' + ratingId, 'put', data).then((res) => getData());
+        apiCall('/rating/'+ratingId, 'put', data).then((res) => getData());
         setShow('');
         setInputValue('')
         window.location.reload()
     }
 
 
-    const [showName, setShowName] = useState('')
-    const [studentEditName, setStudentEditName] = useState('')
 
-    function editStudent(id) {
-        if (studentEditName === '') {
+   const [showName, setShowName]=useState('')
+    const [studentEditName, setStudentEditName]=useState('')
+    function editStudent(id){
+        if(studentEditName===''){
             return;
         }
         let data = {
             name: studentEditName,
             groupId: groupId
         }
-        apiCall('/student/' + id, 'put', data).then(res => {
+        apiCall('/student/'+id, 'put', data).then(res=>{
             getData()
             setShowName('')
         })
         setStudentEditName('')
     }
 
-    const [showSubject, setShowSubject] = useState('')
-    const [subjectEditName, setSubjectEditName] = useState('')
-
-    function editSubject(id) {
-        if (subjectEditName === '') {
+    const [showSubject, setShowSubject]=useState('')
+    const [subjectEditName, setSubjectEditName]=useState('')
+    function editSubject(id){
+        if(subjectEditName===''){
             getData()
             return;
         }
@@ -152,7 +146,7 @@ function RatingGroup(props) {
             groupId: groupId
         }
         console.log(id, data)
-        apiCall('/subject/' + id, 'put', data).then(res => {
+        apiCall('/subject/'+id, 'put', data).then(res=>{
             getData()
             setShowSubject('')
         })
@@ -160,15 +154,15 @@ function RatingGroup(props) {
     }
 
 
-    function deleteAll(path) {
-        setShowSubject('')
+function deleteAll(path){
+    setShowSubject('')
 
-        setSubjectEditName('')
-        apiCall(path, 'delete').then(res => {
-            getData()
-        })
-        window.location.reload()
-    }
+    setSubjectEditName('')
+       apiCall(path,'delete').then(res=>{
+           getData()
+       })
+    window.location.reload()
+}
 
 
     const [hasUser, setHasUser] = useState(false)
@@ -197,15 +191,16 @@ function RatingGroup(props) {
     }, [])
 
 
-    const [selectedColor, setSelectedColor] = useState('');
-    const [color, setColor] = useState('');
 
-    const handleColorChange = (e, id) => {
-        setColor(e)
-        apiCall('/student/color/' + id + '/' + e, 'put').then(res => {
-            getData()
-        })
-    };
+        const [selectedColor, setSelectedColor] = useState('');
+        const [color, setColor] = useState('');
+
+        const handleColorChange = (e, id) => {
+            setColor(e)
+            apiCall('/student/color/'+id+'/'+e, 'put').then(res=>{
+                getData()
+            })
+        };
 
     return (
         <div>
@@ -214,255 +209,300 @@ function RatingGroup(props) {
                 <div>
                     <h1>{currentGroup?.name} guruh</h1>
                 </div>
-                {hasUser ?
+                <div className={'my-2 d-flex justify-content-center align-items-center gap-5'}>
+                    <div className='d-flex align-items-center'>
+                        <span className="translate-middle p-2 bg-success h-50 rounded-circle"></span>
+                        <p>5 baho</p>
+                    </div>
+                    <div className='d-flex align-items-center'>
+                        <span className="translate-middle p-2 bg-info h-50 rounded-circle"></span>
+                        <p>4 baho</p>
+                    </div>
+                    <div className='d-flex align-items-center'>
+                        <span className="translate-middle p-2 bg-warning h-50 rounded-circle"></span>
+                        <p>3 baho</p>
+                    </div>
+                    <div className='d-flex align-items-center'>
+                        <span className="translate-middle p-2 bg-danger h-50 rounded-circle"></span>
+                        <p>Yiqilgan</p>
+                    </div>
+                </div>
+                {hasUser?
                     <table className={'table table-bordered text-center'}>
-                        <thead>
-                        <tr>
-                            <th style={{width: '50px'}}>№</th>
-                            <th>O'quvchilar</th>
-                            <th></th>
-                            {subjects.map((item, index) =>
-                                <td onClick={() => {
-                                    setShowSubject(index);
-                                    setSubjectEditName(item.name)
-                                }}>
-                                    <div className={'d-flex'}>
-                                        <input
-                                            type={"text"}
-                                            max={100}
-                                            min={0}
-                                            className={'form-control shadow-none border border-0 w-75'}
-                                            value={index === showSubject ? subjectEditName : item.name}
-                                            onChange={(e) => setSubjectEditName(e.target.value)}
-                                        />
-                                       <div className={'btn-group'}>
-                                           <button
-                                               className={'btn btn-warning ' + (index === showSubject ? '' : 'd-none')}
-                                               onClick={() => editSubject(item.id)}
-                                           >
-                                               Save
-                                           </button>
-                                           <button
-                                               className={'btn btn-warning ' + (index === showSubject ? '' : 'd-none')}
-                                               onClick={() => deleteAll('/subject/' + item?.id)}
-                                           >
-                                               delete
-                                           </button>
-                                       </div>
-                                    </div>
-                                </td>
-                            )}
-                            <th>
-                                <CheckUser>
-                                    <div style={{width: '200px'}} className={'d-flex m-0 p-0'}>
-                                        <input value={subjectName} onChange={(e) => {
-                                            setSubjectName(e.target.value)
-                                        }} placeholder={"fan qo'shish"}
-                                               className={'form-control shadow-none border border-0 '}/>
-                                        <button onClick={saveSubject} className={'btn btn-warning'}>+</button>
-                                    </div>
-                                </CheckUser>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <thead>
+                    <tr>
+                        <th style={{width: '30px'}}>№</th>
+                        <th>Fanlar</th>
                         {
-                            ratings?.map((rating, index) =>
+                            ratings?.map((rating,index)=>
 
-                                <tr key={index + rating.id} className={'text-center'}>
-                                    <th>{index + 1}</th>
+                                <th key={index+rating.id} className={'text-center '}>
 
-                                    <td onClick={() => {
-                                        setShowName(index);
-                                        setStudentEditName(rating?.student.name)
-                                    }}>
-                                        <div className={'d-flex'}>
-                                            <input
-                                                type={"text"}
-                                                max={100}
-                                                min={0}
-                                                className={'form-control shadow-none border border-0 w-75'}
-                                                value={index === showName ? studentEditName : rating?.student.name}
-                                                onChange={(e) => setStudentEditName(e.target.value)}
-                                            />
-                                            <div className={'btn-group'}>
+                                    <div className={'d-flex'}>
+                                        <div className={'d-flex'} onClick={()=>{setShowName(index); setStudentEditName(rating?.student.name)}}>
+                                            <div className={'d-flex'}>
+                                                <input
+                                                    type={"text"}
+                                                    max={100}
+                                                    min={0}
+                                                    className={'form-control shadow-none border border-0 w-75'}
+                                                    value={index===showName?studentEditName:rating?.student.name}
+                                                    onChange={(e) => setStudentEditName(e.target.value)}
+                                                />
                                                 <button
-                                                    className={'btn btn-warning ' + (index === showName ? '' : 'd-none')}
+                                                    className={'btn btn-dark ' + (index===showName? '' : 'd-none')}
                                                     onClick={() => editStudent(rating?.student.id)}
                                                 >
                                                     Save
                                                 </button>
                                                 <button
-                                                    className={'btn btn-warning ' + (index === showName ? '' : 'd-none')}
-                                                    onClick={() => deleteAll('/student/' + rating?.student.id)}
+                                                    className={'btn btn-dark ' + (index===showName? '' : 'd-none')}
+                                                    onClick={() => deleteAll('/student/'+rating?.student.id)}
                                                 >
                                                     delete
                                                 </button>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <Dropdown>
-                                            <Dropdown.Toggle style={{
-                                                backgroundColor: rating.student.color,
-                                                width: '80px',
-                                                height: '40px'
-                                            }} variant="success" id={`dropdown-${rating?.student.id}`}>
+                                        <div>
+                                            <Dropdown>
+                                                <Dropdown.Toggle className={rating?.student.color}  id={`dropdown-${rating?.student.id}`}>
 
-                                            </Dropdown.Toggle>
+                                                </Dropdown.Toggle>
 
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item
-                                                    href="#"
-                                                    style={{backgroundColor: 'red', color: 'white'}}
-                                                    onClick={() => handleColorChange('red', rating?.student.id)}
-                                                >
-                                                    Red
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                    href="#"
-                                                    style={{backgroundColor: 'yellow', color: 'black'}}
-                                                    onClick={() => handleColorChange('yellow', rating?.student.id)}
-                                                >
-                                                    Yellow
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                    href="#"
-                                                    style={{backgroundColor: 'green', color: 'white'}}
-                                                    onClick={() => handleColorChange('green', rating?.student.id)}
-                                                >
-                                                    Green
-                                                </Dropdown.Item>
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </td>
-
-                                    {subjects.map(subject => {
-                                        const filteredRatings = rating?.getRating.filter(item => item.subject.id === subject.id);
-                                        if (filteredRatings.length === 0) {
-                                            return <td key={subject.id} onClick={() => {
-                                                setShow(subject.name + rating.student.name)
-                                                setInputValue('')
-                                            }}>
-                                                <div className={'d-flex'}>
-                                                    <input
-                                                        type={"number"}
-                                                        max={100}
-                                                        min={0}
-                                                        className={'form-control shadow-none border border-0'}
-                                                        value={show === subject.name + rating.student.name ? inputValue : ''}
-                                                        onChange={(e) => setInputValueJon(e.target.value)}
-                                                    />
-                                                    <button
-                                                        className={'btn btn-warning ' + (show === subject.name + rating?.student.name ? '' : 'd-none')}
-                                                        onClick={() => createRating(rating.student.id, subject.id)}
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item
+                                                        className={'bg-success text-white'}
+                                                        onClick={() => handleColorChange('bg-success', rating?.student.id)}
                                                     >
-                                                        Save
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        } else {
-                                            return filteredRatings.map(result => (
-                                                <td key={subject.id} onClick={() => {
-                                                    setShow(subject.name + rating.student.name)
-                                                    setInputValue(result.mark)
-                                                }}>
-                                                    <div className={'d-flex'}>
-                                                        <input
-                                                            type={"number"}
-                                                            max={100}
-                                                            min={0}
-                                                            className={'form-control shadow-none border border-0'}
-                                                            value={show === subject.name + rating.student.name ? inputValue : result.mark}
-                                                            onChange={(e) => setInputValueJon(e.target.value)}
-                                                        />
+                                                        5 baho
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        className={'bg-info text-white'}
+                                                        onClick={() => handleColorChange('bg-info', rating?.student.id)}
+                                                    >
+                                                        4 baho
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        className={'bg-warning text-white'}
+                                                        onClick={() => handleColorChange('bg-warning', rating?.student.id)}
+                                                    >
+                                                        3 baho
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        className={'bg-danger text-white'}
+                                                        onClick={() => handleColorChange('bg-danger', rating?.student.id)}
+                                                    >
+                                                        yiqilgan
+                                                    </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                </th>
 
-                                                        <button
-                                                            className={'btn btn-warning ' + (show === subject.name + rating?.student.name ? '' : 'd-none')}
-                                                            onClick={() => editRating(result.id, rating.student.id, subject.id)}
-                                                        >
-                                                            Save
-                                                        </button>
-                                                    </div>
-
-                                                </td>
-                                            ));
-                                        }
-                                    })}
-                                    <td></td>
-                                </tr>
                             )
                         }
 
+                        <td>
+                            <CheckUser>
+                                <div className={'d-flex'}>
+                                    <input value={studentName} onChange={(e) => {
+                                        setStudentName(e.target.value)
+                                    }} placeholder={"O'quvchi qo'shish"} className={'form-control shadow-none border border-0'}/>
+                                    <button onClick={saveStudent} className={'btn btn-dark'}>+</button>
+                                </div>
+                            </CheckUser>
+                        </td>
+                    </tr>
 
-                        <tr>
-                            <th>
+                    </thead>
+                    <tbody>
+                    {subjects.map((subject, index)=>
+                     <tr>
+                         <th>
+                             {index+1}
+                         </th>
+                         <th onClick={()=>{setShowSubject(index); setSubjectEditName(subject.name)}}>
+                             <div className={'d-flex'}>
+                                 <input
+                                     type={"text"}
+                                     max={100}
+                                     min={0}
+                                     className={'form-control shadow-none border border-0 w-75'}
+                                     value={index===showSubject?subjectEditName:subject.name}
+                                     onChange={(e) => setSubjectEditName(e.target.value)}
+                                 />
+                                 <button
+                                     className={'btn btn-dark ' + (index===showSubject? '' : 'd-none')}
+                                     onClick={() => editSubject(subject.id)}
+                                 >
+                                     Save
+                                 </button>
+                                 <button
+                                     className={'btn btn-dark ' + (index===showSubject? '' : 'd-none')}
+                                     onClick={() => deleteAll('/subject/'+subject?.id)}
+                                 >
+                                     delete
+                                 </button>
+                             </div>
+                         </th>
 
-                            </th>
-                            <td>
-                                <CheckUser>
-                                    <div className={'d-flex'}>
-                                        <input value={studentName} onChange={(e) => {
-                                            setStudentName(e.target.value)
-                                        }} placeholder={"O'quvchi qo'shish"}
-                                               className={'form-control shadow-none border border-0'}/>
-                                        <button onClick={saveStudent} className={'btn btn-warning'}>+</button>
-                                    </div>
-                                </CheckUser>
-                            </td>
-                            {
-                                subjects.map(item =>
-                                    <td></td>
-                                )
-                            }
-                            <td></td>
-                        </tr>
+                         {
+                             ratings.map(rating=>
+                                 {
+                                     const filteredRatings = rating?.getRating.filter(item => item.subject.id === subject.id);
+                                     if (filteredRatings.length === 0) {
+                                         return <td key={subject.id} onClick={() => {
+                                             setShow(subject.name + rating.student.name)
+                                             setInputValue('')
+                                         }} >
+                                             <div className={'d-flex'}>
+                                                 <input
+                                                     type={"number"}
+                                                     max={100}
+                                                     min={0}
+                                                     className={'form-control shadow-none border border-0'}
+                                                     value={show ===subject.name+rating.student.name?inputValue:''}
+                                                     onChange={(e) => setInputValueJon(e.target.value)}
+                                                 />
+                                                 <button
+                                                     className={'btn btn-dark ' + (show ===subject.name+rating?.student.name? '' : 'd-none')}
+                                                     onClick={() => createRating(rating.student.id, subject.id)}
+                                                 >
+                                                     Save
+                                                 </button>
+                                             </div>
+                                         </td>
+                                     } else {
+                                         return filteredRatings.map(result => (
+                                             <td key={subject.id} onClick={() => {
+                                                 setShow(subject.name + rating.student.name)
+                                                 setInputValue(result.mark)
+                                             }} >
+                                                 <div className={'d-flex'}>
+                                                     <input
+                                                         type={"number"}
+                                                         max={100}
+                                                         min={0}
+                                                         className={'form-control shadow-none border border-0'}
+                                                         value={show ===subject.name+rating.student.name?inputValue:result.mark}
+                                                         onChange={(e) => setInputValueJon(e.target.value)}
+                                                     />
 
-                        </tbody>
-                    </table> :
+                                                     <button
+                                                         className={'btn btn-dark ' + (show ===subject.name+rating?.student.name? '' : 'd-none')}
+                                                         onClick={() => editRating(result.id,rating.student.id, subject.id)}
+                                                     >
+                                                         Save
+                                                     </button>
+                                                 </div>
+
+                                             </td>
+                                         ));
+                                     }
+                                 }
+
+                             )
+                         }
+<td></td>
+
+                     </tr>
+                    )}
+                    <tr>
+                        <th></th>
+                       <th>
+                           <CheckUser>
+                               <div style={{width: '200px'}} className={'d-flex m-0 p-0'}>
+                                   <input value={subjectName} onChange={(e) => {
+                                       setSubjectName(e.target.value)
+                                   }} placeholder={"fan qo'shish"} className={'form-control shadow-none border border-0 '}/>
+                                   <button onClick={saveSubject} className={'btn btn-dark'}>+</button>
+
+                               </div>
+                           </CheckUser>
+                       </th>
+                        {
+                            ratings?.map((rating,index)=>
+
+                                <td></td>
+
+                            )
+                        }
+                        <td></td>
+                    </tr>
+
+
+
+
+
+
+                    </tbody>
+                </table>
+                    :
 
                     <table className={'table table-bordered text-center'}>
                         <thead>
                         <tr>
-                            <th style={{width: '50px'}}>№</th>
-                            <th style={{width: '300px'}}>O'quvchilar</th>
-                            {subjects.map((item, index) =>
-                                <td>
-                                    {item.name}
-                                </td>
-                            )}
+                            <th style={{width: '30px'}}>№</th>
+                            <th style={{width: '200px'}}>Fanlar</th>
+                            {
+                                ratings?.map((rating,index)=>
+
+                                    <th key={index+rating.id} className={'text-center '+rating.student.color}>
+
+                                        {rating?.student.name}
+                                    </th>
+
+                                )
+                            }
+
 
                         </tr>
+
                         </thead>
                         <tbody>
-                        {
-                            ratings?.map((rating, index) =>
+                        {subjects.map((subject, index)=>
+                            <tr>
+                                <th>
+                                    {index+1}
+                                </th>
+                                <th >
+                                    {subject.name}
+                                </th>
 
-                                <tr key={index + rating.id} className={'text-center'}>
-                                    <th>{index + 1}</th>
-
-                                    <td>
-                                        {rating?.student.name}
-                                    </td>
-                                    {subjects.map(subject => {
-                                        const filteredRatings = rating?.getRating.filter(item => item.subject.id === subject.id);
-                                        if (filteredRatings.length === 0) {
-                                            return <td></td>
-                                        } else {
-                                            return filteredRatings.map(result => (
-                                                <td>
-                                                    {result?.mark}
+                                {
+                                    ratings.map(rating=>
+                                        {
+                                            const filteredRatings = rating?.getRating.filter(item => item.subject.id === subject.id);
+                                            if (filteredRatings.length === 0) {
+                                                return <td key={subject.id} className={rating.student.color}>
 
                                                 </td>
-                                            ));
-                                        }
-                                    })}
+                                            } else {
+                                                return filteredRatings.map(result => (
+                                                    <td key={subject.id} className={rating.student.color} >
+                                                        {result.mark}
 
-                                </tr>
-                            )
-                        }
+                                                    </td>
+                                                ));
+                                            }
+                                        }
+
+                                    )
+                                }
+
+
+                            </tr>
+                        )}
+
+
+
+
+
+
                         </tbody>
-                    </table>}
+                    </table>
+                }
             </div>
         </div>
     );

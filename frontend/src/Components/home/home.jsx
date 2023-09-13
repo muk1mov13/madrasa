@@ -235,7 +235,7 @@ function Home(props) {
                                         </g>
                                     </svg>
                                     <div className="hero_box_content">
-                                        <h2 className="hero_box_title">Rating</h2>
+                                        <h2 className="hero_box_title">Reyting</h2>
                                         <p className="hero_box_link">Batafsil</p>
                                     </div>
                                 </div>
