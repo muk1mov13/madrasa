@@ -19,7 +19,7 @@ function NewsForTeachers(props) {
     const [loading, setLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [editItem, setEditItem] = useState(null);
-    const [tableActive, setTableActive] = useState(false);
+    const [tableActive, setTableActive] = useState(null);
     const hasUser = localStorage.getItem('access_token')
 
 
@@ -97,12 +97,12 @@ function NewsForTeachers(props) {
             apiCall('/article/status/' + id, 'PUT', null, {status: e}).then(res => {
                 console.log(res.data)
                 getArticles()
-                setTableActive(false)
+                setTableActive(null)
             })
         } else {
             alert('aktivligini tanlang!')
         }
-        setTableActive(false)
+        setTableActive(null)
     }
 
     return (
@@ -138,9 +138,9 @@ function NewsForTeachers(props) {
                                 <td><b>{item.body}</b></td>
                                 {
                                     hasUser ?
-                                        <td style={{cursor: 'pointer'}} onClick={() => setTableActive(true)}>
+                                        <td style={{cursor: 'pointer'}} onClick={() => setTableActive(item.id)}>
                                             {
-                                                tableActive ? <select
+                                                tableActive===item.id ? <select
                                                     value={item.status + ''}
                                                     className={'form-select'}
                                                     onChange={(e) => handleChange(e.target.value, item.id)}>

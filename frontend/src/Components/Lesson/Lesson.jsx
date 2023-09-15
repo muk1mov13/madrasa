@@ -53,7 +53,7 @@ function Lesson(props) {
 
     function changeInput(weekId, para, lesson) {
         setEdit(lesson.id)
-        setIsModalOpen(true);
+
         setSelectedWeekId(weekId);
         setPara(para)
         setTeacher(lesson.teacher)
@@ -61,8 +61,10 @@ function Lesson(props) {
         setRoom(lesson.room)
     }
 
+    const [showInp, setShowInp]=useState('')
+
     function createLesson(weekId, para) {
-        setIsModalOpen(true);
+
         setSelectedWeekId(weekId);
         setPara(para)
     }
@@ -78,6 +80,7 @@ function Lesson(props) {
 
     function saveLesson() {
         setIsSaving(true); // Set saving/loading state
+        document.getElementById('yangiQoshish').classList.add('d-none');
 
         const data = {
             groupId: groupId,
@@ -87,12 +90,15 @@ function Lesson(props) {
             teacher: teacher,
             weekId: selectedWeekId
         };
+        window.location.reload()
         if (edit === '') {
             apiCall('/lesson/' + groupId, 'post', data)
                 .then(response => {
                     console.log('Lesson saved successfully:', response.data);
                     closeModal()
                     getCurrentGroup()
+                    document.getElementById('yangiQoshish').classList.remove('d-none');
+
                 })
                 .catch(error => {
                     console.error('Error saving lesson:', error);
@@ -105,6 +111,8 @@ function Lesson(props) {
                 .then(response => {
                     console.log('Lesson saved successfully:', response.data);
                     closeModal()
+                    document.getElementById('yangiQoshish').classList.remove('d-none');
+
                     getCurrentGroup()
                 })
                 .catch(error => {
@@ -115,8 +123,44 @@ function Lesson(props) {
                 });
             setEdit('')
         }
+setShowInp('')
+    }
+    function deleteLesson(id) {
+        apiCall('/lesson/' + id, 'delete').then(res=>{
+            getCurrentGroup()
+            setShowInp('')
+        })
+    }
+    function closeInp(){
+        setShowInp('')
+
 
     }
+
+    const [hasUser, setHasUser] = useState(false)
+
+    function getUser() {
+        let token = localStorage.getItem('access_token');
+        if (token !== null) {
+            axios({
+                url: 'http://localhost:8080/api/auth/me', method: 'get', headers: {
+                    Authorization: token,
+                }
+            }).then(res => {
+                if (res.data.phone !== null) {
+                    setHasUser(true)
+                }
+            }).catch(err => {
+                setHasUser(false)
+            })
+        } else {
+            setHasUser(false);
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
 
     return (
         <div>
@@ -154,29 +198,182 @@ function Lesson(props) {
                                         <React.Fragment key={week.id}>
                                             {filteredLessons.length === 0 ? (
                                                 <>
-                                                    <td onClick={() => createLesson(week.id, darsSoati)}>
-                                                        {
+                                                    <td onClick={() => {
+                                                        createLesson(week.id, darsSoati)
+                                                        showInp!==week.name+ darsSoati&&closeModal()
+                                                        setShowInp(week.name+ darsSoati)
 
+                                                    }}  className={index % 2 == 0 ? 'table-warning' : 'table-primary'}>
+                                                        {
+                                                            showInp===week.name+ darsSoati?
+                                                                <CheckUser>
+                                                                <div id={'yangiQoshish'} className={showInp===week.name+ darsSoati?'':'d-none'}>
+                                                                    <label>Dars nomi:</label>
+                                                                    <input
+                                                                        className={"form-control"}
+                                                                        type={'text'}
+                                                                        value={lessonName}
+                                                                        placeholder={""}
+                                                                        onChange={(e) => {
+                                                                            setLessonName(e.target.value);
+                                                                        }}
+                                                                    />
+                                                                    <label className={'my-2'}>Dars o'qituvchisi</label>
+                                                                    <input
+                                                                        className={"form-control mt-2"}
+                                                                        type={'text'}
+                                                                        value={teacher}
+                                                                        placeholder={"O'qituvchi nomi.."}
+                                                                        onChange={(e) => {
+                                                                            setTeacher(e.target.value);
+                                                                        }}
+                                                                    />
+                                                                    <label className={'my-2'}>Dars xonasi</label>
+                                                                    <input
+                                                                        className={"form-control mt-2"}
+                                                                        type={'text'}
+                                                                        value={room}
+                                                                        placeholder={"Xona.."}
+                                                                        onChange={(e) => {
+                                                                            setRoom(e.target.value);
+                                                                        }}
+                                                                    />
+                                                                    <div
+                                                                        type={"submit"}
+                                                                        disabled={isSaving || isLoading}
+                                                                        className=" my-1 button button_color_1 text-center trans_200 btn btn-warning"
+                                                                        onClick={saveLesson}
+                                                                    >
+                                                                        {isSaving ? 'Saqlanmoqda...' : 'Saqlash'}
+                                                                    </div>
+                                                                    <button
+                                                                        className="my-1 button button_color_1 text-center trans_200 btn btn-dark"
+                                                                        onClick={() => {
+                                                                            closeInp();
+                                                                            // Add code here to hide the element with id 'yangiQoshish'
+                                                                            document.getElementById('yangiQoshish').classList.add('d-none');
+                                                                        }}
+                                                                    >
+                                                                        yopish
+                                                                    </button>
+                                                                </div>
+                                                                </CheckUser>
+                                                                    :''
                                                         }
                                                     </td>
-                                                    <td></td>
+                                                    <td className={index % 2 == 0 ? 'table-warning' : 'table-primary'}></td>
                                                 </>
                                             ) : (
                                                 filteredLessons.map((item) => (
                                                     <React.Fragment key={item.id}>
                                                         <td
                                                             className={index % 2 == 0 ? 'table-warning' : 'table-primary'}
-                                                            onClick={() => changeInput(week.id, darsSoati, item)}>
-                                                            <b className={'text-success'}><img width={25} height={25}
-                                                                                               src={subjectImg}/> {item.name}
-                                                            </b>
-                                                            <br/>
-                                                            <div className={'text-start'}>
-                                                                <b className={'text-primary'}><img width={25}
-                                                                                                   height={25}
-                                                                                                   src={teacherImg}/> {item.teacher}
-                                                                </b>
-                                                            </div>
+                                                            >
+                                                            {
+                                                                showInp===item.id?
+                                                                    <CheckUser>
+                                                                    <div id={'yangiQoshish'} >
+                                                                        <label>Dars nomi:</label>
+                                                                        <input
+                                                                            className={"form-control"}
+                                                                            type={'text'}
+                                                                            value={lessonName}
+                                                                            placeholder={""}
+                                                                            onChange={(e) => {
+                                                                                setLessonName(e.target.value);
+                                                                            }}
+                                                                        />
+                                                                        <label className={'my-2'}>Dars o'qituvchisi</label>
+                                                                        <input
+                                                                            className={"form-control mt-2"}
+                                                                            type={'text'}
+                                                                            value={teacher}
+                                                                            placeholder={"O'qituvchi nomi.."}
+                                                                            onChange={(e) => {
+                                                                                setTeacher(e.target.value);
+                                                                            }}
+                                                                        />
+                                                                        <label className={'my-2'}>Dars xonasi</label>
+                                                                        <input
+                                                                            className={"form-control mt-2"}
+                                                                            type={'text'}
+                                                                            value={room}
+                                                                            placeholder={"Xona.."}
+                                                                            onChange={(e) => {
+                                                                                setRoom(e.target.value);
+                                                                            }}
+                                                                        />
+                                                                        <div
+                                                                            type={"submit"}
+                                                                            disabled={isSaving || isLoading}
+                                                                            className=" my-1 button button_color_1 text-center trans_200 btn btn-warning"
+                                                                            onClick={()=>{
+                                                                                saveLesson()
+                                                                                closeInp()
+                                                                                setShowInp(false)
+
+                                                                            }}
+                                                                        >
+                                                                            {isSaving ? 'Saqlanmoqda...' : 'Saqlash'}
+                                                                        </div>
+                                                                        <button
+                                                                            className="my-1 button button_color_1 text-center trans_200 btn btn-dark"
+                                                                            onClick={() => {
+                                                                                closeInp();
+                                                                                setShowInp(false)
+                                                                            }}
+                                                                        >
+                                                                            yopish
+                                                                        </button>
+                                                                        <button
+                                                                            className="my-1 button button_color_1 text-center trans_200 btn btn-danger"
+                                                                            onClick={() => {
+                                                                                deleteLesson(item.id)
+                                                                                setShowInp(false)
+                                                                            }}
+                                                                        >
+                                                                            O'chirish
+                                                                        </button>
+                                                                    </div>
+                                                                    </CheckUser>
+                                                                    :
+                                                                  <>
+                                                                  {hasUser?
+                                                                      <div
+                                                                          onClick={() => {
+                                                                              changeInput(week.id, darsSoati, item)
+                                                                              setShowInp(item.id)
+                                                                          }}
+                                                                      >
+                                                                          <b className={'text-success'}><img width={25} height={25}
+                                                                                                             src={subjectImg}/> {item.name}
+                                                                          </b>
+                                                                          <br/>
+                                                                          <div className={'text-start'}>
+                                                                              <b className={'text-primary'}><img width={25}
+                                                                                                                 height={25}
+                                                                                                                 src={teacherImg}/> {item.teacher}
+                                                                              </b>
+                                                                          </div>
+                                                                      </div>
+                                                                  :
+                                                                      <div
+
+                                                                      >
+                                                                          <b className={'text-success'}><img width={25} height={25}
+                                                                                                             src={subjectImg}/> {item.name}
+                                                                          </b>
+                                                                          <br/>
+                                                                          <div className={'text-start'}>
+                                                                              <b className={'text-primary'}><img width={25}
+                                                                                                                 height={25}
+                                                                                                                 src={teacherImg}/> {item.teacher}
+                                                                              </b>
+                                                                          </div>
+                                                                      </div>
+                                                                  }
+                                                                  </>
+                                                            }
 
                                                         </td>
                                                         <td
@@ -194,7 +391,57 @@ function Lesson(props) {
 
 
                         </tbody>
+                        {/*<tbody>*/}
 
+                        {/*{[0, 1, 2, 3, 4].map(darsSoati =>*/}
+                        {/*    <tr>*/}
+                        {/*        <td className={'table-primary'}><b>{darsSoati}</b></td>*/}
+                        {/*        {weekDays.map((week, index) => {*/}
+                        {/*            const filteredLessons = lessons.filter(les => les.para === darsSoati && les.weekDay?.id === week.id);*/}
+                        {/*            return (*/}
+                        {/*                <React.Fragment key={week.id}>*/}
+                        {/*                    {filteredLessons.length === 0 ? (*/}
+                        {/*                        <>*/}
+                        {/*                            <td onClick={() => createLesson(week.id, darsSoati)}>*/}
+                        {/*                                {*/}
+
+                        {/*                                }*/}
+                        {/*                            </td>*/}
+                        {/*                            <td></td>*/}
+                        {/*                        </>*/}
+                        {/*                    ) : (*/}
+                        {/*                        filteredLessons.map((item) => (*/}
+                        {/*                            <React.Fragment key={item.id}>*/}
+                        {/*                                <td*/}
+                        {/*                                    className={index % 2 == 0 ? 'table-warning' : 'table-primary'}*/}
+                        {/*                                    onClick={() => changeInput(week.id, darsSoati, item)}>*/}
+                        {/*                                    <b className={'text-success'}><img width={25} height={25}*/}
+                        {/*                                                                       src={subjectImg}/> {item.name}*/}
+                        {/*                                    </b>*/}
+                        {/*                                    <br/>*/}
+                        {/*                                    <div className={'text-start'}>*/}
+                        {/*                                        <b className={'text-primary'}><img width={25}*/}
+                        {/*                                                                           height={25}*/}
+                        {/*                                                                           src={teacherImg}/> {item.teacher}*/}
+                        {/*                                        </b>*/}
+                        {/*                                    </div>*/}
+
+                        {/*                                </td>*/}
+                        {/*                                <td*/}
+                        {/*                                    style={{fontSize: '22px'}}*/}
+                        {/*                                    className={index % 2 == 0 ? 'table-warning text-danger' : 'table-primary text-danger'}>{item.room}*/}
+                        {/*                                </td>*/}
+                        {/*                            </React.Fragment>*/}
+                        {/*                        ))*/}
+                        {/*                    )}*/}
+                        {/*                </React.Fragment>*/}
+                        {/*            );*/}
+                        {/*        })}*/}
+                        {/*    </tr>*/}
+                        {/*)}*/}
+
+
+                        {/*</tbody>*/}
                     </table>
                 </div>
             </div>

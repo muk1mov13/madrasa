@@ -139,9 +139,9 @@ function NewsForStudents(props) {
                                 <td><b>{item.body}</b></td>
                                 {
                                     hasUser ?
-                                        <td style={{cursor: 'pointer'}} onClick={() => setTableActive(true)}>
+                                        <td style={{cursor: 'pointer'}} onClick={() => setTableActive(item.id)}>
                                             {
-                                                tableActive ? <select
+                                                tableActive === item.id ? <select
                                                     value={item.status + ''}
                                                     className={'form-select'}
                                                     onChange={(e) => handleChange(e.target.value, item.id)}>

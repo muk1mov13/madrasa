@@ -95,8 +95,9 @@ function Group(props) {
                 <Header/>
             </div>
 
-            <div style={{marginTop: '200px'}} className={'container d-flex gap-4'}>
+            <div style={{marginTop: '200px', }} className={'container '}>
 
+            <div className={'d-flex gap-3 flex-wrap'}>
                 {loading ? <DataLoading/> : data?.map(item =>
                     <div className="col-lg-2 order-lg-1 order-2 ">
                         <div className="event_date d-flex flex-column align-items-center justify-content-center">
@@ -128,6 +129,7 @@ function Group(props) {
                     </CheckUser>
                 </div>
 
+            </div>
             </div>
 
 

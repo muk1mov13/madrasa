@@ -112,7 +112,7 @@ function reallyDelete(id){
                 <div>
                     <h1>{courseId}-kurs</h1>
                 </div>
-                <div  className={'container d-flex gap-4'}>
+                <div  className={'container d-flex gap-4 flex-wrap'}>
 
                     {loading ? <DataLoading/> :
 
