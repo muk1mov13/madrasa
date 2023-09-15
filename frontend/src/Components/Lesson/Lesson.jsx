@@ -6,6 +6,7 @@ import apiCall from '../../instance/index';
 import CheckUser from "../Securty/CheckUser";
 import subjectImg from './books.png';
 import teacherImg from './teache.png';
+import axios from "axios";
 
 
 function Lesson(props) {
@@ -139,7 +140,7 @@ setShowInp('')
 
     const [hasUser, setHasUser] = useState(false)
 
-    function getUser() {
+    function getUser()   {
         let token = localStorage.getItem('access_token');
         if (token !== null) {
             axios({
